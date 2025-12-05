@@ -8,66 +8,27 @@
 
 import Foundation
 
-
-struct DesignToken: Codable {
-    let name: String
-    let values: [Value]
+struct AppConfig: Codable {
+    let colors: ColorModes
+    let mode: String
+    let strings: AppStrings
 }
 
-
-struct Value: Codable {
-    let color: [Colors]?
-    let mode: Mode
-    let number, string: [Colors]?
+struct ColorModes: Codable {
+    let dark: ColorSet
+    let light: ColorSet
 }
 
-struct Colors: Codable {
-    let value, colorVar, name, rootAlias: String
-
-    enum CodingKeys: String, CodingKey {
-        case value
-        case colorVar = "var"
-        case name, rootAlias
-    }
+struct ColorSet: Codable {
+    let mainBg: String
 }
 
-
-struct Mode: Codable {
-    let id, name: String
+struct AppStrings: Codable {
+    let greetings: String
 }
 
-typealias DesignTokens = [DesignToken]
-
-enum APIDataSource {
-    case firebase(DesignToken)
-    
+struct ResponseConfig {
+    let background: String
+    let greeting: String
 }
-
-struct ResponseConfig: Codable {
-    let name: String
-    let bg_body: String
-    let bg_bottom: String
-    let button : String
-    let contrasena: String
-    let ingresar: String
-    let fuente: String
-    let border: CGFloat
-    let border_small: CGFloat
-    let tema: String
-    let chartsAccentColor:String
-    let journal:String
-    let caloriescolor:String
-    let tiempocolor:String
-    let servingscolor:String
-    let proteinscolor:String
-    let carbscolor:String
-    let fatscolor:String
-    let chartsbackgroundcolor: String
-    let chartsfontcolor: String
-    let calendarText:String
-    let borderTarjetas:CGFloat
-    let progresoCalorias:CGFloat
-    let avatarUrl: String
-}
-
 
