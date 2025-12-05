@@ -10,7 +10,7 @@ import SwiftUI
 import Firebase
 
 
-class FirebaseTokenProvider {
+class FirebaseTokenProvider : TokenProvider{
     private let databaseRef = Database.database().reference()
     
     func fetchDesignTokens(completion: @escaping (ResponseConfig) -> Void) {

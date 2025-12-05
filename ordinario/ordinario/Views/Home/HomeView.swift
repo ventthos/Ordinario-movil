@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var viewModel: DesignTokensViewModel
     
     // Datos dinámicos desde Firebase
     let institutionName: String
@@ -203,5 +204,6 @@ struct HomeMenuItem: Identifiable {
             HomeMenuItem(title: "Perfil", icon: "person.fill", color: .orange, destination: AnyView(Text("Perfil")))
         ]
     )
+    .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
 }
 

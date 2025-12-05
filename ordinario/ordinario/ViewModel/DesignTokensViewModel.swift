@@ -10,7 +10,7 @@ internal import Combine
 
 
 class DesignTokensViewModel: ObservableObject {
-    @Published var tokens: DesignTokens? = nil
+    //@Published var tokens: DesignTokens? = nil
     @Published var config: ResponseConfig? = nil
     private var tokenProvider: TokenProvider
     

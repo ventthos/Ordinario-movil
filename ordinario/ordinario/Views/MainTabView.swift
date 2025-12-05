@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    
+    @EnvironmentObject var viewModel: DesignTokensViewModel
     // 🔶 Color institucional
     let accentColor = Color(red: 255/255, green: 87/255, blue: 51/255)
     

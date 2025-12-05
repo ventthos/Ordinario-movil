@@ -13,11 +13,28 @@ class UserAdapter {
         
         // elegir modo
         let isDark = config.mode == "dark"
-        let bgColor = isDark ? config.colors.dark.mainBg : config.colors.light.mainBg
+        let modeColors = isDark ? config.colors.dark : config.colors.light
+        
+        // strings
+        let strings = config.strings
+        
+        // Valores
+        let appValues = config.values
         
         return ResponseConfig(
-            background: bgColor,
-            greeting: config.strings.greetings
+            colors: .init(
+                background: modeColors.mainBg,
+                cardBackground: modeColors.cardBackground,
+                mainColor: modeColors.mainColor,
+                mainFontColor: modeColors.mainFontColor
+            ),
+            strings: .init(
+                greeting: strings.greetings,
+                nombreInstitucion: strings.nombreInstitucion
+            ),
+            values: .init(
+                logoUrl: appValues.logoUrl
+            )
         )
     }
 }

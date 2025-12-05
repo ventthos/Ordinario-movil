@@ -1,19 +1,36 @@
 import SwiftUI
 
 struct LoginView: View {
-    
-    // MARK: - Datos dinámicos (Firebase los llenará)
-    let logoURL: String?
-    let institutionName: String
-    let accentColor: Color
+    @StateObject private var viewModel = DesignTokensViewModel(tokenProvider: FirebaseTokenProvider())
     
     // MARK: - Campos
     @State private var email = ""
     @State private var password = ""
     @State private var isPasswordVisible = false
     
-    let background = Color(red: 28/255, green: 28/255, blue: 30/255)
-    let cardBackground = Color(red: 44/255, green: 44/255, blue: 46/255)
+    var background: Color {
+        if let hex = viewModel.config?.colors.background {
+            return Color(hex: hex)
+        }
+        return Color(red: 28/255, green: 28/255, blue: 30/255)
+    }
+    
+    var cardBackground: Color {
+        if let hex = viewModel.config?.colors.cardBackground {
+            return Color(hex: hex)
+        }
+        return Color(red: 44/255, green: 44/255, blue: 46/255)
+    }
+    
+    var accentColor: Color {
+        let hex = viewModel.config?.colors.mainColor ?? "#000000"
+        return Color(hex: hex)
+    }
+
+    var mainFontColor: Color {
+        let hex = viewModel.config?.colors.mainFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
     
     var body: some View {
         ZStack {
@@ -25,7 +42,7 @@ struct LoginView: View {
                 
                 // MARK: - LOGO
                 VStack {
-                    if let logoStr = logoURL, let url = URL(string: logoStr) {
+                    if let logoStr = viewModel.config?.values.logoUrl, let url = URL(string: logoStr) {
                         AsyncImage(url: url) { phase in
                             switch phase {
                             case .success(let img):
@@ -36,33 +53,35 @@ struct LoginView: View {
                                 ProgressView()
                                     .frame(height: 90)
                             case .failure:
-                                Image(systemName: "building.columns")
+                                Image(systemName: "exclamationmark.triangle.fill")
                                     .resizable()
                                     .scaledToFit()
-                                    .foregroundColor(accentColor)
+                                    .foregroundColor(.red)
                                     .frame(height: 80)
+                                    .symbolRenderingMode(.hierarchical)
                             default:
                                 EmptyView()
                             }
                         }
                     } else {
-                        Image(systemName: "building.columns")
+                        Image(systemName: "exclamationmark.triangle.fill")
                             .resizable()
                             .scaledToFit()
-                            .foregroundColor(accentColor)
+                            .foregroundColor(.red)
                             .frame(height: 80)
+                            .symbolRenderingMode(.hierarchical)
                     }
                 }
                 .padding(.top, 40)
                 
                 // MARK: - TEXTOS INSTITUCIONALES
                 VStack(spacing: 6) {
-                    Text(institutionName)
+                    Text(viewModel.config?.strings.nombreInstitucion ?? "No data")
                         .font(.title.bold())
-                        .foregroundColor(.white)
+                        .foregroundColor(mainFontColor)
                     
                     Text("Iniciar sesión en tu cuenta")
-                        .foregroundColor(.white.opacity(0.7))
+                        .foregroundColor(mainFontColor.opacity(0.7))
                         .font(.headline)
                 }
                 
@@ -155,10 +174,7 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(
-        logoURL: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_TEC.png",
-        institutionName: "Instituto Tecnológico Superior",
-        accentColor: Color(red: 255/255, green: 87/255, blue: 51/255)
-    )
+    LoginView()
 }
+
 
