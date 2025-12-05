@@ -1,37 +1,58 @@
-//
-//  AnnoucementCard.swift
-//  ordinario
-//
-//  Created by user286436 on 12/3/25.
-//
-
 import SwiftUI
 
 struct AnnouncementCard: View {
     let announcement: Announcement
 
-    // Colores consistentes con tu app
     let cardBackgroundColor = Color(red: 44/255, green: 44/255, blue: 46/255)
     let accentColor = Color(red: 255/255, green: 87/255, blue: 51/255)
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
+
+            // Imagen del anuncio
+            if let urlString = announcement.imageURL,
+               let url = URL(string: urlString) {
+
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                            .frame(maxWidth: .infinity, minHeight: 150)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity, minHeight: 150)
+                            .clipped()
+                            .cornerRadius(12)
+                    case .failure:
+                        Color.gray.opacity(0.3)
+                            .frame(maxWidth: .infinity, minHeight: 150)
+                            .overlay(
+                                Image(systemName: "photo")
+                                    .foregroundColor(.white.opacity(0.6))
+                                    .font(.largeTitle)
+                            )
+                            .cornerRadius(12)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+            }
+
             // Título
             Text(announcement.title)
                 .font(.headline)
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .lineLimit(2)
-                .multilineTextAlignment(.leading)
 
-            // Mensaje (puede ocupar varias líneas)
+            // Mensaje
             Text(announcement.message)
                 .font(.subheadline)
                 .foregroundColor(.white.opacity(0.9))
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
 
-            // Fecha pequeña (si existe)
+            // Fecha
             if let d = announcement.date {
                 HStack {
                     Spacer()
@@ -43,23 +64,18 @@ struct AnnouncementCard: View {
         }
         .padding()
         .background(cardBackgroundColor)
-        .cornerRadius(14)
+        .cornerRadius(16)
         .overlay(
-            // pequeño borde de acento en el lateral izquierdo
-            RoundedRectangle(cornerRadius: 14)
-                .stroke(Color.clear)
-                .background(
-                    HStack {
-                        Rectangle()
-                            .fill(accentColor)
-                            .frame(width: 6)
-                            .cornerRadius(6)
-                        Spacer()
-                    }
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+            HStack {
+                Rectangle()
+                    .fill(accentColor)
+                    .frame(width: 6)
+                Spacer()
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 16))
         )
         .shadow(color: Color.black.opacity(0.3), radius: 6, x: 0, y: 3)
         .padding(.horizontal)
     }
 }
+

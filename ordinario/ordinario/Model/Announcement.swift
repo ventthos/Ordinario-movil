@@ -11,5 +11,6 @@ struct Announcement: Identifiable {
     let id: UUID = UUID()
     let title: String
     let message: String
-    let date: Date? // opcional, por si quieres mostrar fecha más adelante
+    let date: Date?
+    let imageURL: String?   // Imagen para el carrusel
 }

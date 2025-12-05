@@ -19,40 +19,45 @@ struct AnnouncementBoardView: View {
 
                 ScrollView {
                     VStack(spacing: 14) {
-                        // Título grande (igual estilo)
-                        Text("Tablón de Anuncios")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading)
-                            .padding(.top, 12)
-                            .foregroundColor(.white)
 
-                        // Si no hay anuncios mostramos un placeholder
+                        // Header moderno
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Tablón de Anuncios")
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(.white)
+
+                            Text("Lo más reciente de tu institución")
+                                .font(.subheadline)
+                                .foregroundColor(.white.opacity(0.7))
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                        .padding(.top, 12)
+
+                        // No hay anuncios
                         if announcements.isEmpty {
-                            VStack(spacing: 8) {
+                            VStack(spacing: 10) {
                                 Image(systemName: "megaphone")
-                                    .font(.largeTitle)
-                                    .foregroundColor(.white.opacity(0.7))
+                                    .font(.system(size: 40))
+                                    .foregroundColor(.white.opacity(0.5))
+
                                 Text("Sin anuncios")
-                                    .foregroundColor(.white.opacity(0.7))
-                                    .font(.subheadline)
+                                    .foregroundColor(.white.opacity(0.65))
+                                    .font(.headline)
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 40)
+                            .padding(.vertical, 60)
                         } else {
-                            // Lista de tarjetas
-                            VStack(spacing: 12) {
+                            VStack(spacing: 16) {
                                 ForEach(announcements) { ann in
                                     AnnouncementCard(announcement: ann)
+                                        .transition(.opacity.combined(with: .scale))
                                 }
                             }
                             .padding(.top, 6)
                         }
 
-                        Spacer(minLength: 30)
+                        Spacer(minLength: 40)
                     }
-                    .padding(.bottom, 20)
                 }
             }
             .navigationBarHidden(true)
@@ -63,22 +68,28 @@ struct AnnouncementBoardView: View {
 
 struct AnnouncementBoardView_Previews: PreviewProvider {
     static var previews: some View {
-        AnnouncementBoardView(announcements: [
-            Announcement(
-                title: "Inicio de periodo",
-                message: "El periodo ordinario comenzará el lunes 8 de diciembre. Revisen el calendario y las aulas asignadas.",
-                date: Date()
-            ),
-            Announcement(
-                title: "Entrega de proyecto",
-                message: "Recuerden entregar el proyecto final en formato PDF a través de la plataforma antes de las 23:59 del viernes.",
-                date: Date().addingTimeInterval(-86400)
-            ),
-            Announcement(
-                title: "Horario de tutorías",
-                message: "Las tutorías con los profesores estarán disponibles martes y jueves de 16:00 a 18:00 en el aula 204.",
-                date: nil
-            )
-        ])
+        AnnouncementBoardView(
+            announcements: [
+                Announcement(
+                    title: "Semana Cultural",
+                    message: "Participa en nuestros talleres de arte, música y danza.",
+                    date: Date(),
+                    imageURL: "https://picsum.photos/id/1025/400/200"
+                ),
+                Announcement(
+                    title: "Nuevo Programa Académico",
+                    message: "Presentamos la nueva carrera de Ingeniería en IA.",
+                    date: Date(),
+                    imageURL: "https://picsum.photos/id/1011/400/200"
+                ),
+                Announcement(
+                    title: "Concurso de Robótica",
+                    message: "Inscríbete antes del viernes.",
+                    date: nil,
+                    imageURL: "https://picsum.photos/id/1043/400/200"
+                )
+            ]
+        )
+        .preferredColorScheme(.dark)
     }
 }

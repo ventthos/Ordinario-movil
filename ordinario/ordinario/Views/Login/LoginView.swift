@@ -1,154 +1,164 @@
-//
-//  LoginView.swift
-//  ordinario
-//
-//  Created by user286436 on 12/2/25.
-//
-
 import SwiftUI
 
 struct LoginView: View {
+    
+    // MARK: - Datos dinámicos (Firebase los llenará)
+    let logoURL: String?
+    let institutionName: String
+    let accentColor: Color
+    
+    // MARK: - Campos
     @State private var email = ""
     @State private var password = ""
-    @State private var isLoading = false
+    @State private var isPasswordVisible = false
     
-    private let imageURL = URL(string: "https://assetsio.gnwcdn.com/cover_7ovpf5l.jpg?width=1200&height=630&fit=crop&enable=upscale&auto=webp")!
-    
-    @State private var reloadToken = UUID()
+    let background = Color(red: 28/255, green: 28/255, blue: 30/255)
+    let cardBackground = Color(red: 44/255, green: 44/255, blue: 46/255)
     
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack {
+            background.ignoresSafeArea()
             
-            // ---------------------------
-            //   Imagen grande superior
-            // ---------------------------
-            AsyncImage(url: imageURL) { phase in
-                switch phase {
-                case .empty:
-                    ZStack {
-                        Color(.systemGray5)
-                        ProgressView()
-                    }
-                case .success(let img):
-                    img.resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 300)
-                        .clipped()
-                case .failure:
-                    ZStack {
-                        Color(.systemGray5)
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .font(.largeTitle)
-                            .foregroundColor(.orange)
-                    }
-                @unknown default:
-                    EmptyView()
-                }
-            }
-            .frame(height: 300)
-            .clipped()
-            .id(reloadToken)
-            
-            
-            // ----------------------------------------
-            //   Tarjeta blanca sobre la imagen
-            // ----------------------------------------
-            VStack {
+            VStack(spacing: 30) {
                 
-                Spacer().frame(height: 240) // mueve la tarjeta hacia abajo
+                Spacer()
                 
-                VStack(spacing: 25) {
-                    
-                    // Título
-                    Text("Control Escolar")
-                        .font(.largeTitle.bold())
-                        .foregroundColor(.black.opacity(0.85))
-                        .padding(.top, 10)
-                    
-                    VStack(spacing: 18) {
-                        TextField("Correo institucional", text: $email)
-                            .padding()
-                            .background(Color(.systemGray6))
-                            .cornerRadius(12)
-                            .autocapitalization(.none)
-                        
-                        SecureField("Contraseña", text: $password)
-                            .padding()
-                            .background(Color(.systemGray6))
-                            .cornerRadius(12)
-                    }
-                    .padding(.horizontal, 15)
-                    
-                    Button {
-                        withAnimation { isLoading = true }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                            isLoading = false
-                        }
-                    } label: {
-                        HStack {
-                            Spacer()
-                            if isLoading {
-                                ProgressView().tint(.white)
-                            } else {
-                                Text("Iniciar Sesión")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
+                // MARK: - LOGO
+                VStack {
+                    if let logoStr = logoURL, let url = URL(string: logoStr) {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .success(let img):
+                                img.resizable()
+                                    .scaledToFit()
+                                    .frame(height: 90)
+                            case .empty:
+                                ProgressView()
+                                    .frame(height: 90)
+                            case .failure:
+                                Image(systemName: "building.columns")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundColor(accentColor)
+                                    .frame(height: 80)
+                            default:
+                                EmptyView()
                             }
-                            Spacer()
+                        }
+                    } else {
+                        Image(systemName: "building.columns")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(accentColor)
+                            .frame(height: 80)
+                    }
+                }
+                .padding(.top, 40)
+                
+                // MARK: - TEXTOS INSTITUCIONALES
+                VStack(spacing: 6) {
+                    Text(institutionName)
+                        .font(.title.bold())
+                        .foregroundColor(.white)
+                    
+                    Text("Iniciar sesión en tu cuenta")
+                        .foregroundColor(.white.opacity(0.7))
+                        .font(.headline)
+                }
+                
+                // MARK: - CARD DE LOGIN
+                VStack(spacing: 20) {
+                    
+                    // EMAIL
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Correo Institucional")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                        
+                        TextField("ejemplo@mail.com", text: $email)
+                            .padding()
+                            .background(cardBackground)
+                            .cornerRadius(12)
+                            .foregroundColor(.white)
+                            .textInputAutocapitalization(.never)
+                            .keyboardType(.emailAddress)
+                    }
+                    
+                    // PASSWORD
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Contraseña")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                        
+                        HStack {
+                            Group {
+                                if isPasswordVisible {
+                                    TextField("•••••••", text: $password)
+                                } else {
+                                    SecureField("•••••••", text: $password)
+                                }
+                            }
+                            .foregroundColor(.white)
+                            
+                            Button(action: {
+                                isPasswordVisible.toggle()
+                            }) {
+                                Image(systemName: isPasswordVisible ? "eye.slash.fill" : "eye.fill")
+                                    .foregroundColor(.gray)
+                            }
                         }
                         .padding()
-                        .background(Color.blue)
-                        .cornerRadius(14)
+                        .background(cardBackground)
+                        .cornerRadius(12)
                     }
-                    .disabled(isLoading)
-                    .padding(.horizontal, 15)
-                    .shadow(color: Color.black.opacity(0.12), radius: 8, y: 3)
                     
-                    Button("¿Olvidaste tu contraseña?") {}
-                        .font(.subheadline)
-                        .foregroundColor(.blue)
+                    // RECUPERAR
+                    Button {
+                        // Acción tuya
+                    } label: {
+                        Text("¿Olvidaste tu contraseña?")
+                            .font(.subheadline)
+                            .foregroundColor(accentColor)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
                     
-                    Spacer()
                 }
-                .padding(.top, 20)
-                .padding(.bottom, 30)
-                .frame(maxWidth: .infinity)
-                .background(Color.white)
-                .cornerRadius(30, corners: [.topLeft, .topRight])
-                .shadow(radius: 5)
+                .padding()
+                .background(cardBackground.opacity(0.4))
+                .cornerRadius(20)
+                .padding(.horizontal)
+                
+                // MARK: - BOTÓN LOGIN
+                Button {
+                    // Aquí haces Firebase Auth
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text("Ingresar")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(accentColor)
+                    .cornerRadius(14)
+                }
+                .padding(.horizontal)
+                .padding(.top, 10)
+                
+                Spacer()
+                Spacer()
             }
         }
-        .edgesIgnoringSafeArea(.top)
+        .preferredColorScheme(.dark)
     }
 }
 
 #Preview {
-    LoginView()
+    LoginView(
+        logoURL: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_TEC.png",
+        institutionName: "Instituto Tecnológico Superior",
+        accentColor: Color(red: 255/255, green: 87/255, blue: 51/255)
+    )
 }
 
-
-// Extensión para redondear solo algunas esquinas
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape( RoundedCorner(radius: radius, corners: corners) )
-    }
-}
-
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
-    }
-}
-
-#Preview {
-    LoginView()
-}
