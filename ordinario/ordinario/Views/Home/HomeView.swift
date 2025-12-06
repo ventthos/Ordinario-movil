@@ -16,11 +16,21 @@ struct HomeView: View {
     let logoURL: String?
     let bannerURL: String?
     let userPhotoURL: String?
-    let announcements: [Announcement]    // ← Ahora usamos Announcement
+    let announcements: [Announcement]
     let menuItems: [HomeMenuItem]
 
-    let bg = Color(red: 20/255, green: 20/255, blue: 22/255)
-    let card = Color(red: 40/255, green: 40/255, blue: 42/255)
+    var bg: Color {
+        let hex = viewModel.config?.colors.background ?? "#141416"
+        return Color(hex: hex)
+    }
+    
+    var card: Color {
+        if let hex = viewModel.config?.colors.cardBackground {
+            return Color(hex: hex)
+        }
+        return Color(red: 44/255, green: 44/255, blue: 46/255)
+    }
+
 
     @State private var animate = false
 
@@ -66,7 +76,7 @@ extension HomeView {
         HStack {
 
             // Logo
-            if let urlStr = logoURL, let url = URL(string: urlStr) {
+            if let urlStr = viewModel.config?.values.logoUrl, let url = URL(string: urlStr) {
                 AsyncImage(url: url) { img in
                     img.resizable()
                         .scaledToFit()
