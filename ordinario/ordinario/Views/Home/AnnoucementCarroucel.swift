@@ -7,14 +7,14 @@
 
 import SwiftUI
 struct AnnouncementCarousel: View {
-
+    @EnvironmentObject var viewModel: DesignTokensViewModel
     let announcements: [Announcement]
 
     var body: some View {
         VStack(alignment: .leading) {
             Text("Promociones / Avisos")
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundColor(Color(hex: viewModel.config?.colors.mainFontColor ?? "#ffffff"))
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 14) {

@@ -79,6 +79,7 @@ struct LoginView: View {
                     Text(viewModel.config?.strings.nombreInstitucion ?? "No data")
                         .font(.title.bold())
                         .foregroundColor(mainFontColor)
+                        .multilineTextAlignment(.center)
                     
                     Text("Iniciar sesión en tu cuenta")
                         .foregroundColor(mainFontColor.opacity(0.7))
@@ -91,12 +92,12 @@ struct LoginView: View {
                     // EMAIL
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Correo Institucional")
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color(hex:viewModel.config?.colors.labelInputColor ?? "#ffffff"))
                             .font(.subheadline)
                         
                         TextField("ejemplo@mail.com", text: $email)
                             .padding()
-                            .background(cardBackground)
+                            .background(Color(hex:viewModel.config?.colors.inputColor ?? "#ffffff"))
                             .cornerRadius(12)
                             .foregroundColor(.white)
                             .textInputAutocapitalization(.never)
@@ -106,7 +107,7 @@ struct LoginView: View {
                     // PASSWORD
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Contraseña")
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color(hex:viewModel.config?.colors.labelInputColor ?? "#ffffff"))
                             .font(.subheadline)
                         
                         HStack {
@@ -127,7 +128,7 @@ struct LoginView: View {
                             }
                         }
                         .padding()
-                        .background(cardBackground)
+                        .background(Color(hex:viewModel.config?.colors.labelInputColor ?? "#ffffff"))
                         .cornerRadius(12)
                     }
                     

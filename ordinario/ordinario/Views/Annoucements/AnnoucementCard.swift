@@ -15,6 +15,11 @@ struct AnnouncementCard: View {
         let hex = viewModel.config?.colors.mainColor ?? "#000000"
         return Color(hex: hex)
     }
+    
+    var mainFontColor: Color {
+        let hex = viewModel.config?.colors.mainFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -54,13 +59,13 @@ struct AnnouncementCard: View {
             Text(announcement.title)
                 .font(.headline)
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundColor(mainFontColor)
                 .lineLimit(2)
 
             // Mensaje
             Text(announcement.message)
                 .font(.subheadline)
-                .foregroundColor(.white.opacity(0.9))
+                .foregroundColor(mainFontColor.opacity(0.9))
 
             // Fecha
             if let d = announcement.date {
@@ -68,7 +73,7 @@ struct AnnouncementCard: View {
                     Spacer()
                     Text(d, style: .date)
                         .font(.caption)
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundColor(mainFontColor.opacity(0.6))
                 }
             }
         }

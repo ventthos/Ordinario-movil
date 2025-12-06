@@ -12,7 +12,14 @@ struct HomeView: View {
     
     let accentColor: Color
     let userPhotoURL: String?
-    let menuItems: [HomeMenuItem]
+    var menuItems: [HomeMenuItem] {
+        [
+            HomeMenuItem(title: "Cursos", icon: "book.fill", color: Color(hex:viewModel.config?.colors.subjectsColor ?? "#ffffff") , destination: AnyView(Text("Cursos"))),
+            HomeMenuItem(title: "Tareas", icon: "checkmark.circle.fill", color: Color(hex:viewModel.config?.colors.tasksColor ?? "#ffffff"), destination: AnyView(Text("Tareas"))),
+            HomeMenuItem(title: "Calificaciones", icon: "chart.bar.fill", color: Color(hex:viewModel.config?.colors.gradesColor ?? "#ffffff"), destination: AnyView(Text("Calificaciones"))),
+            HomeMenuItem(title: "Perfil", icon: "person.fill", color: Color(hex:viewModel.config?.colors.announcementsColor ?? "#ffffff"), destination: AnyView(Text("Perfil")))
+        ]
+    }
 
     var bg: Color {
         let hex = viewModel.config?.colors.background ?? "#141416"
@@ -45,6 +52,7 @@ struct HomeView: View {
 
                     // Carrusel de promociones / avisos
                     AnnouncementCarousel(announcements: annoucements)
+                        .environmentObject(viewModel)
 
                     // Menú principal
                     quickMenu
@@ -88,10 +96,7 @@ extension HomeView {
             VStack(alignment: .leading, spacing: 2) {
                 Text(viewModel.config?.strings.nombreInstitucion ?? "")
                     .font(.headline)
-                    .foregroundColor(.white)
-                Text("Portal estudiantil")
-                    .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(Color(hex: viewModel.config?.colors.mainFontColor ?? "#ffffff"))
             }
 
             Spacer()
@@ -119,6 +124,10 @@ extension HomeView {
     // BANNER institucional
     private var bannerSection: some View {
         VStack {
+            Text(viewModel.config?.strings.greeting ?? "")
+                .font(.title3)
+                .foregroundColor(Color(hex: viewModel.config?.colors.mainFontColor ?? "#ffffff"))
+                .fontWeight(.bold)
             if let urlStr = viewModel.config?.values.bannerImageUrl, let url = URL(string: urlStr) {
                 AsyncImage(url: url) { img in
                     img.resizable()
@@ -148,7 +157,7 @@ extension HomeView {
                             .font(.system(size: 30, weight: .bold))
                             .foregroundColor(.white)
                             .padding(20)
-                            .background(item.color.opacity(0.25))
+                            .background(item.color.opacity(0.8))
                             .clipShape(Circle())
 
                         Text(item.title)
@@ -157,7 +166,7 @@ extension HomeView {
                     }
                     .padding(.vertical, 22)
                     .frame(maxWidth: .infinity)
-                    .background(card)
+                    .background(item.color.opacity(0.6))
                     .cornerRadius(18)
                     .shadow(color: .black.opacity(0.3), radius: 6, y: 3)
                     .scaleEffect(animate ? 1 : 0.94)
@@ -187,13 +196,8 @@ struct HomeMenuItem: Identifiable {
 #Preview {
     HomeView(
         accentColor: Color(red: 255/255, green: 87/255, blue: 51/255),
-        userPhotoURL: "https://randomuser.me/api/portraits/men/32.jpg",
-        menuItems: [
-            HomeMenuItem(title: "Cursos", icon: "book.fill", color: .blue, destination: AnyView(Text("Cursos"))),
-            HomeMenuItem(title: "Tareas", icon: "checkmark.circle.fill", color: .green, destination: AnyView(Text("Tareas"))),
-            HomeMenuItem(title: "Calificaciones", icon: "chart.bar.fill", color: .purple, destination: AnyView(Text("Calificaciones"))),
-            HomeMenuItem(title: "Perfil", icon: "person.fill", color: .orange, destination: AnyView(Text("Perfil")))
-        ]
+        userPhotoURL: "https://randomuser.me/api/portraits/men/32.jpg"
+        
     )
     .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
 }

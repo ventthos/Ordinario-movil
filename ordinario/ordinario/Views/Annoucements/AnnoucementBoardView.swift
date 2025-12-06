@@ -18,6 +18,11 @@ struct AnnouncementBoardView: View {
         return Color(red: 28/255, green: 28/255, blue: 30/255)
     }
     
+    var mainFontColor: Color {
+        let hex = viewModel.config?.colors.mainFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
+    
     var announcements: [Announcement]{
         return viewModel.config?.annoucements ?? []
     }
@@ -34,11 +39,11 @@ struct AnnouncementBoardView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Tablón de Anuncios")
                                 .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.white)
+                                .foregroundColor(mainFontColor)
 
                             Text("Lo más reciente de tu institución")
                                 .font(.subheadline)
-                                .foregroundColor(.white.opacity(0.7))
+                                .foregroundColor(mainFontColor.opacity(0.7))
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)

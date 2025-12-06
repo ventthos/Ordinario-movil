@@ -29,7 +29,13 @@ class UserAdapter {
                 background: modeColors.mainBg,
                 cardBackground: modeColors.cardBackground,
                 mainColor: modeColors.mainColor,
-                mainFontColor: modeColors.mainFontColor
+                mainFontColor: modeColors.mainFontColor,
+                inputColor: modeColors.inputColor,
+                labelInputColor: modeColors.inputColor,
+                announcementsColor: modeColors.announcementsColor,
+                gradesColor: modeColors.gradesColor,
+                subjectsColor: modeColors.subjectsColor,
+                tasksColor: modeColors.taskColor
             ),
             strings: .init(
                 greeting: strings.greetings,

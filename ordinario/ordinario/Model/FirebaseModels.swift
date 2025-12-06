@@ -28,6 +28,12 @@ struct ColorSet: Codable {
     let cardBackground: String
     let mainColor: String
     let mainFontColor: String
+    let inputColor: String
+    let labelInputColor: String
+    let announcementsColor: String
+    let gradesColor: String
+    let subjectsColor: String
+    let taskColor: String
 }
 
 struct AppStrings: Codable {
@@ -57,6 +63,12 @@ struct ResponseConfig {
         let cardBackground: String
         let mainColor: String
         let mainFontColor: String
+        let inputColor: String
+        let labelInputColor: String
+        let announcementsColor: String
+        let gradesColor: String
+        let subjectsColor: String
+        let tasksColor: String
     }
     struct Strings {
         let greeting: String
