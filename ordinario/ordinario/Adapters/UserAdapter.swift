@@ -33,7 +33,8 @@ class UserAdapter {
                 nombreInstitucion: strings.nombreInstitucion
             ),
             values: .init(
-                logoUrl: appValues.logoUrl
+                logoUrl: appValues.logoUrl,
+                bannerImageUrl: appValues.bannerImageUrl
             )
         )
     }

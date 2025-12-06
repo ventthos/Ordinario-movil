@@ -88,7 +88,7 @@ extension HomeView {
             }
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(institutionName)
+                Text(viewModel.config?.strings.nombreInstitucion ?? "")
                     .font(.headline)
                     .foregroundColor(.white)
                 Text("Portal estudiantil")
@@ -121,7 +121,7 @@ extension HomeView {
     // BANNER institucional
     private var bannerSection: some View {
         VStack {
-            if let urlStr = bannerURL, let url = URL(string: urlStr) {
+            if let urlStr = viewModel.config?.values.bannerImageUrl, let url = URL(string: urlStr) {
                 AsyncImage(url: url) { img in
                     img.resizable()
                         .scaledToFill()

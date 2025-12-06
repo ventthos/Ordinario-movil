@@ -36,6 +36,7 @@ struct AppStrings: Codable {
 
 struct AppValues: Codable{
     let logoUrl: String
+    let bannerImageUrl: String
 }
 
 struct ResponseConfig {
@@ -52,6 +53,7 @@ struct ResponseConfig {
 
     struct ValuesForApp{
         let logoUrl: String
+        let bannerImageUrl: String
     }
     
     let colors: Colors
