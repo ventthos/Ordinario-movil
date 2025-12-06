@@ -13,6 +13,7 @@ class DesignTokensViewModel: ObservableObject {
     //@Published var tokens: DesignTokens? = nil
     @Published var config: ResponseConfig? = nil
     private var tokenProvider: TokenProvider
+    @Published var userData: UserData? = nil
     
     init(tokenProvider: TokenProvider) {
         self.tokenProvider = tokenProvider
@@ -23,5 +24,9 @@ class DesignTokensViewModel: ObservableObject {
         tokenProvider.fetchDesignTokens { [weak self] tokens in
             self?.config = tokens
         }
+    }
+    
+    func fechUserData(){
+        tokenProvider.fetchUserData(userIndex: <#T##Int#>, completion: <#T##(UserData) -> Void#>)
     }
 }

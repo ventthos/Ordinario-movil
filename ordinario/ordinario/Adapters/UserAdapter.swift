@@ -57,4 +57,40 @@ class UserAdapter {
             )
         )
     }
+    
+    static func convertUserData(user: UserDataDb) -> UserData{
+        return UserData(
+            career: user.career,
+            email: user.email,
+            grades: .init(
+                user.grades.map{ item in
+                    SemesterGrades(
+                        title: item.title,
+                        grades: .init(
+                            item.subjects.map{ grade in
+                                Grade(
+                                    subjectName: grade.subjectName,
+                                    score: grade.score
+                                )
+                            }
+                        )
+                    )
+                }
+            ),
+            group: user.group,
+            name: user.name,
+            photoUrl: user.photoUrl,
+            subjects: .init(
+                user.subjects.map{ subject in
+                    Subject(
+                        name: subject.name,
+                        teacherName: subject.teacherName,
+                        photoURL: subject.photoURL ?? "",
+                        schedule: subject.schedule,
+                        description: subject.description
+                    )
+                }
+            )
+        )
+    }
 }

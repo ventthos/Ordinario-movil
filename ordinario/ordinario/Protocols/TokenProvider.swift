@@ -7,4 +7,5 @@
 
 protocol TokenProvider {
     func fetchDesignTokens(completion: @escaping (ResponseConfig) -> Void)
+    func fetchUserData(userIndex: Int, completion: @escaping (UserData) -> Void)
 }

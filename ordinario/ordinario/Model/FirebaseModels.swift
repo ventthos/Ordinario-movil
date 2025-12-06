@@ -86,3 +86,31 @@ struct ResponseConfig {
     let values: ValuesForApp
     let annoucements: [Announcement]
 }
+
+struct UserDataDb: Codable {
+    let career: String
+    let email: String
+    let grades: [GradeDb]
+    let group: String
+    let name: String
+    let photoUrl: String?
+    let subjects: [SubjectInfoDb]
+}
+
+struct GradeDb: Codable {
+    let subjects: [GradeSubjectDb]
+    let title: String
+}
+
+struct GradeSubjectDb: Codable {
+    let score: Double
+    let subjectName: String
+}
+
+struct SubjectInfoDb: Codable {
+    let description: String
+    let name: String
+    let photoURL: String?
+    let schedule: String
+    let teacherName: String
+}
