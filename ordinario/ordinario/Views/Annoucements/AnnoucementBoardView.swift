@@ -8,10 +8,20 @@
 import SwiftUI
 
 struct AnnouncementBoardView: View {
-    @State var announcements: [Announcement]
-
-    let primaryBackground = Color(red: 28/255, green: 28/255, blue: 30/255)
-
+    
+    @EnvironmentObject var viewModel: DesignTokensViewModel
+    
+    var primaryBackground: Color {
+        if let hex = viewModel.config?.colors.background {
+            return Color(hex: hex)
+        }
+        return Color(red: 28/255, green: 28/255, blue: 30/255)
+    }
+    
+    var announcements: [Announcement]{
+        return viewModel.config?.annoucements ?? []
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -51,6 +61,7 @@ struct AnnouncementBoardView: View {
                                 ForEach(announcements) { ann in
                                     AnnouncementCard(announcement: ann)
                                         .transition(.opacity.combined(with: .scale))
+                                        .environmentObject(viewModel)
                                 }
                             }
                             .padding(.top, 6)
@@ -68,28 +79,8 @@ struct AnnouncementBoardView: View {
 
 struct AnnouncementBoardView_Previews: PreviewProvider {
     static var previews: some View {
-        AnnouncementBoardView(
-            announcements: [
-                Announcement(
-                    title: "Semana Cultural",
-                    message: "Participa en nuestros talleres de arte, música y danza.",
-                    date: Date(),
-                    imageURL: "https://picsum.photos/id/1025/400/200"
-                ),
-                Announcement(
-                    title: "Nuevo Programa Académico",
-                    message: "Presentamos la nueva carrera de Ingeniería en IA.",
-                    date: Date(),
-                    imageURL: "https://picsum.photos/id/1011/400/200"
-                ),
-                Announcement(
-                    title: "Concurso de Robótica",
-                    message: "Inscríbete antes del viernes.",
-                    date: nil,
-                    imageURL: "https://picsum.photos/id/1043/400/200"
-                )
-            ]
-        )
+        AnnouncementBoardView()
         .preferredColorScheme(.dark)
+        .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
     }
 }

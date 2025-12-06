@@ -1,10 +1,20 @@
 import SwiftUI
 
 struct AnnouncementCard: View {
+    @EnvironmentObject var viewModel: DesignTokensViewModel
     let announcement: Announcement
 
-    let cardBackgroundColor = Color(red: 44/255, green: 44/255, blue: 46/255)
-    let accentColor = Color(red: 255/255, green: 87/255, blue: 51/255)
+    var cardBackgroundColor: Color {
+        if let hex = viewModel.config?.colors.cardBackground {
+            return Color(hex: hex)
+        }
+        return Color(red: 44/255, green: 44/255, blue: 46/255)
+    }
+    
+    var accentColor: Color {
+        let hex = viewModel.config?.colors.mainColor ?? "#000000"
+        return Color(hex: hex)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {

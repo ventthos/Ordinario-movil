@@ -10,11 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var viewModel: DesignTokensViewModel
     
-    // Datos dinámicos desde Firebase
-    let institutionName: String
     let accentColor: Color
-    let logoURL: String?
-    let bannerURL: String?
     let userPhotoURL: String?
     let menuItems: [HomeMenuItem]
 
@@ -190,10 +186,7 @@ struct HomeMenuItem: Identifiable {
 
 #Preview {
     HomeView(
-        institutionName: "Instituto Tecnológico Superior",
         accentColor: Color(red: 255/255, green: 87/255, blue: 51/255),
-        logoURL: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_TEC.png",
-        bannerURL: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1",
         userPhotoURL: "https://randomuser.me/api/portraits/men/32.jpg",
         menuItems: [
             HomeMenuItem(title: "Cursos", icon: "book.fill", color: .blue, destination: AnyView(Text("Cursos"))),
