@@ -12,5 +12,5 @@ struct Announcement: Identifiable {
     let title: String
     let message: String
     let date: Date?
-    let imageURL: String?   // Imagen para el carrusel
+    let imageURL: String?  
 }

@@ -23,14 +23,20 @@ class FirebaseTokenProvider : TokenProvider{
             do {
                 let jsonData = try JSONSerialization.data(withJSONObject: value)
                 
-                let appConfig = try JSONDecoder().decode(AppConfig.self, from: jsonData)
+                let decoder = JSONDecoder()
+
+                let formatter = DateFormatter()
+                formatter.dateFormat = "dd/MM/yyyy"
+                decoder.dateDecodingStrategy = .formatted(formatter)
+
+                let appConfig = try decoder.decode(AppConfig.self, from: jsonData)
                 
                 let config = UserAdapter.convert(config: appConfig)
                 
                 DispatchQueue.main.async {
                     completion(config)
                 }
-                
+
             } catch {
                 print("❌ Error al decodificar JSON: \(error.localizedDescription)")
             }

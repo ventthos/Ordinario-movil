@@ -21,6 +21,9 @@ class UserAdapter {
         // Valores
         let appValues = config.values
         
+        // Data
+        let data = config.data
+        
         return ResponseConfig(
             colors: .init(
                 background: modeColors.mainBg,
@@ -35,6 +38,16 @@ class UserAdapter {
             values: .init(
                 logoUrl: appValues.logoUrl,
                 bannerImageUrl: appValues.bannerImageUrl
+            ),
+            annoucements: .init(
+                data.annoucements.map { item in
+                    Announcement(
+                        title: item.title,
+                        message: item.message,
+                        date: item.date,
+                        imageURL: item.imageUrl
+                    )
+                }
             )
         )
     }

@@ -16,7 +16,6 @@ struct HomeView: View {
     let logoURL: String?
     let bannerURL: String?
     let userPhotoURL: String?
-    let announcements: [Announcement]
     let menuItems: [HomeMenuItem]
 
     var bg: Color {
@@ -30,7 +29,10 @@ struct HomeView: View {
         }
         return Color(red: 44/255, green: 44/255, blue: 46/255)
     }
-
+    
+    var annoucements: [Announcement]{
+        return viewModel.config?.annoucements ?? []
+    }
 
     @State private var animate = false
 
@@ -46,7 +48,7 @@ struct HomeView: View {
                     bannerSection
 
                     // Carrusel de promociones / avisos
-                    AnnouncementCarousel(announcements: announcements)
+                    AnnouncementCarousel(announcements: annoucements)
 
                     // Menú principal
                     quickMenu
@@ -193,20 +195,6 @@ struct HomeMenuItem: Identifiable {
         logoURL: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_TEC.png",
         bannerURL: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1",
         userPhotoURL: "https://randomuser.me/api/portraits/men/32.jpg",
-        announcements: [
-            Announcement(
-                title: "Convocatoria de Becas 2025",
-                message: "Aplica antes del 10 de enero",
-                date: Date(),
-                imageURL: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
-            ),
-            Announcement(
-                title: "Nuevo Laboratorio de IA",
-                message: "Inauguración muy pronto",
-                date: Date(),
-                imageURL: "https://images.unsplash.com/photo-1519389950473-47ba0277781c"
-            )
-        ],
         menuItems: [
             HomeMenuItem(title: "Cursos", icon: "book.fill", color: .blue, destination: AnyView(Text("Cursos"))),
             HomeMenuItem(title: "Tareas", icon: "checkmark.circle.fill", color: .green, destination: AnyView(Text("Tareas"))),

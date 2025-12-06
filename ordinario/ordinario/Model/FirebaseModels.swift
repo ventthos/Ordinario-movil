@@ -15,6 +15,7 @@ struct AppConfig: Codable {
     let mode: String
     let strings: AppStrings
     let values: AppValues
+    let data: AppData
 }
 
 struct ColorModes: Codable {
@@ -39,6 +40,17 @@ struct AppValues: Codable{
     let bannerImageUrl: String
 }
 
+struct AppData: Codable{
+    let annoucements: [AnnouncementInDb]
+}
+
+struct AnnouncementInDb: Codable {
+    let title: String
+    let message: String
+    let date: Date?
+    let imageUrl: String?
+}
+
 struct ResponseConfig {
     struct Colors {
         let background: String
@@ -55,8 +67,10 @@ struct ResponseConfig {
         let logoUrl: String
         let bannerImageUrl: String
     }
+
     
     let colors: Colors
     let strings: Strings
     let values: ValuesForApp
+    let annoucements: [Announcement]
 }
