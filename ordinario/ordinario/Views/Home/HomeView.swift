@@ -55,7 +55,7 @@ struct HomeView: View {
                     bannerSection
 
                     // Carrusel de promociones / avisos
-                    AnnouncementCarousel(announcements: annoucements)
+                    AnnouncementCarousel(announcements: Array(annoucements.suffix(4)).reversed())
                         .environmentObject(viewModel)
 
                     // Menú principal
