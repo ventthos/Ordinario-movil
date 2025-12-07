@@ -9,13 +9,14 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: DesignTokensViewModel
+    @Binding var selectedTab: Int
     
     var menuItems: [HomeMenuItem] {
         [
-            HomeMenuItem(title: "Cursos", icon: "book.fill", color: Color(hex:viewModel.config?.colors.subjectsColor ?? "#ffffff") , destination: AnyView(Text("Cursos"))),
-            HomeMenuItem(title: "Tareas", icon: "checkmark.circle.fill", color: Color(hex:viewModel.config?.colors.tasksColor ?? "#ffffff"), destination: AnyView(Text("Tareas"))),
-            HomeMenuItem(title: "Calificaciones", icon: "chart.bar.fill", color: Color(hex:viewModel.config?.colors.gradesColor ?? "#ffffff"), destination: AnyView(Text("Calificaciones"))),
-            HomeMenuItem(title: "Perfil", icon: "person.fill", color: Color(hex:viewModel.config?.colors.announcementsColor ?? "#ffffff"), destination: AnyView(Text("Perfil")))
+            HomeMenuItem(title: "Cursos", icon: "book.fill", color: Color(hex:viewModel.config?.colors.subjectsColor ?? "#ffffff") , tab:1),
+            HomeMenuItem(title: "Tareas", icon: "checkmark.circle.fill", color: Color(hex:viewModel.config?.colors.tasksColor ?? "#ffffff"), tab: 2),
+            HomeMenuItem(title: "Calificaciones", icon: "chart.bar.fill", color: Color(hex:viewModel.config?.colors.gradesColor ?? "#ffffff"), tab: 2),
+            HomeMenuItem(title: "Perfil", icon: "person.fill", color: Color(hex:viewModel.config?.colors.announcementsColor ?? "#ffffff"), tab: 3)
         ]
     }
 
@@ -154,7 +155,9 @@ extension HomeView {
                   spacing: 16) {
             ForEach(menuItems) { item in
                 
-                NavigationLink(destination: item.destination) {
+                Button{
+                    selectedTab = item.tab
+                } label:{
                     VStack(spacing: 14) {
                         Image(systemName: item.icon)
                             .font(.system(size: 30, weight: .bold))
@@ -189,17 +192,7 @@ struct HomeMenuItem: Identifiable {
     let title: String
     let icon: String
     let color: Color
-    let destination: AnyView
+    let tab: Int
 }
 
-//
-// MARK: - Preview
-//
-
-#Preview {
-    HomeView(
-        
-    )
-    .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
-}
 
