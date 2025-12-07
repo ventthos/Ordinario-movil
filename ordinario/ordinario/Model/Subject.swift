@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct Subject: Identifiable {
+struct Subject: Identifiable, Equatable {
     let id = UUID()
     let name: String
     let teacherName: String

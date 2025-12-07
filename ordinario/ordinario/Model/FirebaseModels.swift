@@ -39,30 +39,30 @@ struct ColorSet: Codable {
     let navBarColorInactive: String
 }
 
-struct AppStrings: Codable {
+struct AppStrings: Codable, Equatable  {
     let greetings: String
     let nombreInstitucion: String
 }
 
-struct AppValues: Codable{
+struct AppValues: Codable, Equatable {
     let logoUrl: String
     let bannerImageUrl: String
 }
 
-struct AppData: Codable{
+struct AppData: Codable, Equatable {
     let annoucements: [AnnouncementInDb]
     let users: [UserDataDb]
 }
 
-struct AnnouncementInDb: Codable {
+struct AnnouncementInDb: Codable, Equatable  {
     let title: String
     let message: String
     let date: Date?
     let imageUrl: String?
 }
 
-struct ResponseConfig {
-    struct Colors {
+struct ResponseConfig: Equatable  {
+    struct Colors: Equatable  {
         let background: String
         let cardBackground: String
         let mainColor: String
@@ -77,12 +77,12 @@ struct ResponseConfig {
         let navBarColor: String
         let navBarColorInactive: String
     }
-    struct Strings {
+    struct Strings: Equatable  {
         let greeting: String
         let nombreInstitucion: String
     }
 
-    struct ValuesForApp{
+    struct ValuesForApp: Equatable {
         let logoUrl: String
         let bannerImageUrl: String
     }
@@ -95,7 +95,7 @@ struct ResponseConfig {
     let userData: [UserData]
 }
 
-struct UserDataDb: Codable {
+struct UserDataDb: Codable, Equatable  {
     let career: String
     let email: String
     let grades: [GradeDb]
@@ -105,17 +105,17 @@ struct UserDataDb: Codable {
     let subjects: [SubjectInfoDb]
 }
 
-struct GradeDb: Codable {
+struct GradeDb: Codable, Equatable {
     let subjects: [GradeSubjectDb]
     let title: String
 }
 
-struct GradeSubjectDb: Codable {
+struct GradeSubjectDb: Codable, Equatable {
     let score: Double
     let subjectName: String
 }
 
-struct SubjectInfoDb: Codable {
+struct SubjectInfoDb: Codable, Equatable {
     let description: String
     let name: String
     let photoURL: String?

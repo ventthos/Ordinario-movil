@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct Grade: Identifiable {
+struct Grade: Identifiable, Equatable {
     let id = UUID()
     let subjectName: String
     let score: Double
 }
 
-struct SemesterGrades {
+struct SemesterGrades: Equatable {
     let title: String
     let grades: [Grade]
 }

@@ -22,7 +22,6 @@ struct MainTabView: View {
     init() {
             // Fondo de la TabBar
             UITabBar.appearance().backgroundColor = UIColor.black
-            
             UITabBar.appearance().unselectedItemTintColor = UIColor.lightGray
         }
     

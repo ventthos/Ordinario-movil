@@ -6,7 +6,7 @@
 //
 
 
-struct UserData{
+struct UserData: Equatable{
     let career: String
     let email: String
     let grades: [SemesterGrades]

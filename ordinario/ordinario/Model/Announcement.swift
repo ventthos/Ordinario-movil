@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Announcement: Identifiable {
+struct Announcement: Identifiable, Equatable {
     let id: UUID = UUID()
     let title: String
     let message: String
