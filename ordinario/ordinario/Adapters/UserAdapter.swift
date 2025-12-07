@@ -35,7 +35,8 @@ class UserAdapter {
                 announcementsColor: modeColors.announcementsColor,
                 gradesColor: modeColors.gradesColor,
                 subjectsColor: modeColors.subjectsColor,
-                tasksColor: modeColors.taskColor
+                tasksColor: modeColors.taskColor,
+                cardFontColor: modeColors.cardFontColor
             ),
             strings: .init(
                 greeting: strings.greetings,

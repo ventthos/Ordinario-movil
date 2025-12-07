@@ -9,8 +9,18 @@ import SwiftUI
 struct GradeCard: View {
     let grade: Grade
     
-    let cardBackgroundColor = Color(red: 44/255, green: 44/255, blue: 46/255)
-    let accentColor = Color(red: 255/255, green: 87/255, blue: 51/255)
+    @EnvironmentObject var viewModelDb: DesignTokensViewModel
+    var cardBackgroundColor: Color {
+        if let hex = viewModelDb.config?.colors.cardBackground {
+            return Color(hex: hex)
+        }
+        return Color(red: 44/255, green: 44/255, blue: 46/255)
+    }
+    
+    var accentColor: Color {
+        let hex = viewModelDb.config?.colors.mainColor ?? "#000000"
+        return Color(hex: hex)
+    }
 
     var body: some View {
         HStack(spacing: 15) {

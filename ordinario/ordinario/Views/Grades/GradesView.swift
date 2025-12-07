@@ -27,7 +27,17 @@ struct GradesView: View {
         let hex = viewModelDb.config?.colors.mainColor ?? "#000000"
         return Color(hex: hex)
     }
-
+    
+    var mainTextColor: Color {
+        let hex = viewModelDb.config?.colors.mainFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
+    
+    var cardTextColor: Color {
+        let hex = viewModelDb.config?.colors.cardFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -39,7 +49,7 @@ struct GradesView: View {
                         // TÍTULO PRINCIPAL
                         Text("Calificaciones")
                             .font(.largeTitle.bold())
-                            .foregroundColor(.white)
+                            .foregroundColor(mainTextColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading)
                             .padding(.top, 10)
@@ -47,8 +57,8 @@ struct GradesView: View {
                         // 📌 PROMEDIO GENERAL
                         VStack(spacing: 6) {
                             Text("Promedio General")
-                                .foregroundColor(.white.opacity(0.7))
-                            Text("\(viewModel.globalAverage, specifier: "%.2f")")
+                                .foregroundColor(cardTextColor)
+                            Text("\(viewModel.getGlobalAverage(semesters:viewModelDb.config?.userData[0].grades ?? []), specifier: "%.2f")")
                                 .font(.system(size: 40, weight: .bold))
                                 .foregroundColor(accentColor)
                         }
@@ -64,11 +74,12 @@ struct GradesView: View {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(semester.title)
                                     .font(.title2.bold())
-                                    .foregroundColor(.white)
+                                    .foregroundColor(mainTextColor)
                                     .padding(.leading)
 
                                 ForEach(semester.grades) { grade in
                                     GradeCard(grade: grade)
+                                        .environmentObject(viewModelDb)
                                 }
                             }
                         }
