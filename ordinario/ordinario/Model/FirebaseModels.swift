@@ -35,6 +35,8 @@ struct ColorSet: Codable {
     let subjectsColor: String
     let taskColor: String
     let cardFontColor: String
+    let navBarColor: String
+    let navBarColorInactive: String
 }
 
 struct AppStrings: Codable {
@@ -72,6 +74,8 @@ struct ResponseConfig {
         let subjectsColor: String
         let tasksColor: String
         let cardFontColor:String
+        let navBarColor: String
+        let navBarColorInactive: String
     }
     struct Strings {
         let greeting: String

@@ -2,10 +2,21 @@ import SwiftUI
 
 struct SubjectListView: View {
     // Manejo de estado: La lista de materias
+    @EnvironmentObject var viewModel: DesignTokensViewModel
     @State private var subjects: [Subject] = Subject.sampleSubjects
     
-    // Color de fondo principal oscuro (#1C1C1E)
-    let primaryBackground = Color(red: 28/255, green: 28/255, blue: 30/255)
+    // Color de fondo principal
+    var primaryBackground: Color {
+        if let hex = viewModel.config?.colors.background {
+            return Color(hex: hex)
+        }
+        return Color(red: 28/255, green: 28/255, blue: 30/255)
+    }
+    
+    var mainTextColor: Color {
+        let hex = viewModel.config?.colors.mainFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
     
     var body: some View {
         NavigationView {
@@ -22,12 +33,13 @@ struct SubjectListView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.top, 10)
                             .padding(.leading)
-                            .foregroundColor(.white)
+                            .foregroundColor(mainTextColor)
                         
                         // Lista de tarjetas de cursos
-                        ForEach(subjects) { subject in
+                        ForEach(viewModel.config?.userData[0].subjects ?? []) { subject in
                             NavigationLink(destination: MateriaDetalleView(materia: subject)) {
                                 SubjectCardView(subject: subject)
+                                    .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
                             }
                             .buttonStyle(PlainButtonStyle())
                         }
@@ -47,4 +59,5 @@ struct SubjectListView: View {
 
 #Preview{
     SubjectListView()
+        .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
 }

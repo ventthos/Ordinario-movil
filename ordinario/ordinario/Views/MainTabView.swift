@@ -10,19 +10,55 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject var viewModel: DesignTokensViewModel
-    // 🔶 Color institucional
-    let accentColor = Color(red: 255/255, green: 87/255, blue: 51/255)
+    
+    var accentColor: Color {
+        let hex = viewModel.config?.colors.mainColor ?? "#000000"
+        return Color(hex: hex)
+    }
     
     // Para saber en qué tab estamos
     @State private var selectedTab: Int = 0
     
+    init() {
+            // Fondo de la TabBar
+            UITabBar.appearance().backgroundColor = UIColor.black
+            
+            UITabBar.appearance().unselectedItemTintColor = UIColor.lightGray
+        }
+    
     var body: some View {
         TabView(selection: $selectedTab) {
+            HomeView()
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text("Inicio")
+                }
+                .tag(0)
+                .environmentObject(viewModel)
             
-
+            SubjectListView()
+                .tabItem{
+                    Image(systemName: "book")
+                    Text("Materias")
+                }
+                .tag(1)
+                .environmentObject(viewModel)
             
+            GradesView()
+                .tabItem{
+                    Image(systemName: "book.closed.fill")
+                    Text("Calificaciones")
+                }
+                .tag(2)
+                .environmentObject(viewModel)
+            AnnouncementBoardView()
+                .tabItem{
+                    Image(systemName: "megaphone.fill")
+                    Text("Anuncios")
+                }
+                .tag(3)
+                .environmentObject(viewModel)
         }
-        // Tab bar oscura
         .tint(accentColor)
         .preferredColorScheme(.dark)
     }
@@ -30,4 +66,5 @@ struct MainTabView: View {
 
 #Preview {
     MainTabView()
+        .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
 }

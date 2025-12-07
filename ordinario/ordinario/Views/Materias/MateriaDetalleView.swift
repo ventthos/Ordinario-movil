@@ -3,10 +3,39 @@
 import SwiftUI
 
 struct MateriaDetalleView: View {
+    @EnvironmentObject var viewModel: DesignTokensViewModel
+    
     let materia: Subject
-    let primaryBackground = Color(red: 28/255, green: 28/255, blue: 30/255)
-    let cardBackgroundColor = Color(red: 44/255, green: 44/255, blue: 46/255)
-    let accentColor = Color(red: 255/255, green: 87/255, blue: 51/255)
+    
+    var primaryBackground: Color {
+        if let hex = viewModel.config?.colors.background {
+            return Color(hex: hex)
+        }
+        return Color(red: 28/255, green: 28/255, blue: 30/255)
+    }
+    
+    var mainTextColor: Color {
+        let hex = viewModel.config?.colors.mainFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
+    
+    var cardBackgroundColor: Color {
+        if let hex = viewModel.config?.colors.cardBackground {
+            return Color(hex: hex)
+        }
+        return Color(red: 44/255, green: 44/255, blue: 46/255)
+    }
+    
+    var accentColor: Color {
+        let hex = viewModel.config?.colors.mainColor ?? "#000000"
+        return Color(hex: hex)
+    }
+    
+    var cardTextColor: Color {
+        let hex = viewModel.config?.colors.cardFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
+
     
     var body: some View {
         ZStack {
@@ -15,7 +44,6 @@ struct MateriaDetalleView: View {
             ScrollView {
                 VStack(spacing: 20) {
 
-                    // 📌 ENVOLVEMOS LA IMAGEN EN GEOMETRYREADER
                     GeometryReader { proxy in
                         let width = proxy.size.width
 
@@ -30,8 +58,8 @@ struct MateriaDetalleView: View {
                             case .success(let img):
                                 img.resizable()
                                     .scaledToFill()
-                                    .frame(width: width, height: 200)  // 👈 SE BLOQUEA EL ANCHO REAL
-                                    .clipped()                         // 👈 ¡NO SE SALE!
+                                    .frame(width: width, height: 200)  
+                                    .clipped()
 
                             case .failure:
                                 ZStack {
@@ -46,7 +74,7 @@ struct MateriaDetalleView: View {
                             }
                         }
                     }
-                    .frame(height: 200)  // 👈 IMPORTANTE para que GeometryReader no se expanda
+                    .frame(height: 200)
                     .padding(.horizontal)
 
                     // CONTENIDO
@@ -54,41 +82,41 @@ struct MateriaDetalleView: View {
 
                         Text(materia.name)
                             .font(.largeTitle.bold())
-                            .foregroundColor(.white)
+                            .foregroundColor(cardTextColor)
 
                         HStack {
                             Image(systemName: "person.fill")
                                 .foregroundColor(accentColor)
                             Text(materia.teacherName)
                                 .font(.title3)
-                                .foregroundColor(.white)
+                                .foregroundColor(cardTextColor)
                         }
 
-                        Divider().background(.white)
+                        Divider().background(accentColor)
 
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Horarios")
                                 .font(.title2.bold())
-                                .foregroundColor(.white)
+                                .foregroundColor(cardTextColor)
 
                             HStack {
                                 Image(systemName: "calendar")
                                 Text(materia.schedule)
                                 Spacer()
                             }
-                            .foregroundColor(.white)
+                            .foregroundColor(cardTextColor)
                             .font(.subheadline)
                         }
 
-                        Divider().background(.white)
+                        Divider().background(accentColor)
 
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Descripción")
                                 .font(.title2.bold())
-                                .foregroundColor(.white)
+                                .foregroundColor(cardTextColor)
 
                             Text(materia.description)
-                                .foregroundColor(.white.opacity(0.9))
+                                .foregroundColor(cardTextColor.opacity(0.9))
                         }
 
                         Divider().background(.white)
@@ -129,5 +157,6 @@ struct MateriaDetalleView: View {
             description: "Estudio de las integrales y sus aplicaciones."
         )
     )
+    .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
 }
 

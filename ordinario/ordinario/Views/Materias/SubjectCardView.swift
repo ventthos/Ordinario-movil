@@ -13,10 +13,25 @@ import Foundation
 
 struct SubjectCardView: View {
     let subject: Subject
+    @EnvironmentObject var viewModel: DesignTokensViewModel
     
     // Colores personalizados
-    let cardBackgroundColor = Color(red: 44/255, green: 44/255, blue: 46/255) // #2C2C2E
-    let accentColor = Color(red: 255/255, green: 87/255, blue: 51/255) // Coral (#FF5733)
+    var cardBackgroundColor: Color {
+        if let hex = viewModel.config?.colors.cardBackground {
+            return Color(hex: hex)
+        }
+        return Color(red: 44/255, green: 44/255, blue: 46/255)
+    }
+    
+    var accentColor: Color {
+        let hex = viewModel.config?.colors.mainColor ?? "#000000"
+        return Color(hex: hex)
+    }
+    
+    var cardTextColor: Color {
+        let hex = viewModel.config?.colors.cardFontColor ?? "#ffffff"
+        return Color(hex: hex)
+    }
     
     var body: some View {
         HStack(spacing: 15) {
@@ -25,20 +40,20 @@ struct SubjectCardView: View {
                 if let image = phase.image {
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 40, height: 40)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 55, height: 55)
+                        .clipped()
                 } else if phase.error != nil {
-                    // Placeholder si hay error de carga
                     Image(systemName: "book.closed.fill")
                         .font(.title2)
                         .foregroundColor(.white)
+                        .frame(width: 55, height: 55)
                 } else {
-                    // Placeholder mientras carga
                     ProgressView()
+                        .frame(width: 55, height: 55)
                 }
             }
-            .frame(width: 55, height: 55)
-            .background(accentColor.opacity(0.8)) // Fondo de acento Coral
+            .background(accentColor.opacity(0.8))
             .cornerRadius(10)
             
             // 2. Información del Texto
@@ -47,13 +62,13 @@ struct SubjectCardView: View {
                 Text(subject.name)
                     .font(.headline)
                     .fontWeight(.medium)
-                    .foregroundColor(.white)
+                    .foregroundColor(cardTextColor)
                     .lineLimit(1)
                 
                 // Nombre del Maestro
                 Text(subject.teacherName)
                     .font(.subheadline)
-                    .foregroundColor(.gray) // Gris claro para contraste sutil
+                    .foregroundColor(cardTextColor.opacity(0.8))
                     .lineLimit(1)
             }
             
@@ -61,7 +76,7 @@ struct SubjectCardView: View {
             
             // Icono de flecha
             Image(systemName: "chevron.right")
-                .foregroundColor(.gray)
+                .foregroundColor(cardTextColor.opacity(0.8))
         }
         .padding()
         // Contenedor con fondo oscuro que imita las tarjetas del diseño 2

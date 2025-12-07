@@ -10,8 +10,6 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var viewModel: DesignTokensViewModel
     
-    let accentColor: Color
-    let userPhotoURL: String?
     var menuItems: [HomeMenuItem] {
         [
             HomeMenuItem(title: "Cursos", icon: "book.fill", color: Color(hex:viewModel.config?.colors.subjectsColor ?? "#ffffff") , destination: AnyView(Text("Cursos"))),
@@ -35,6 +33,11 @@ struct HomeView: View {
     
     var annoucements: [Announcement]{
         return viewModel.config?.annoucements ?? []
+    }
+    
+    var accentColor: Color {
+        let hex = viewModel.config?.colors.mainColor ?? "#000000"
+        return Color(hex: hex)
     }
 
     @State private var animate = false
@@ -102,7 +105,7 @@ extension HomeView {
             Spacer()
 
             // Foto del alumno
-            if let photoStr = userPhotoURL, let url = URL(string: photoStr) {
+            if let photoStr = viewModel.config?.userData[0].photoUrl, let url = URL(string: photoStr) {
                 AsyncImage(url: url) { img in
                     img.resizable()
                         .scaledToFill()
@@ -195,8 +198,6 @@ struct HomeMenuItem: Identifiable {
 
 #Preview {
     HomeView(
-        accentColor: Color(red: 255/255, green: 87/255, blue: 51/255),
-        userPhotoURL: "https://randomuser.me/api/portraits/men/32.jpg"
         
     )
     .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
