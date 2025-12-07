@@ -48,6 +48,7 @@ struct AppValues: Codable{
 
 struct AppData: Codable{
     let annoucements: [AnnouncementInDb]
+    let users: [UserDataDb]
 }
 
 struct AnnouncementInDb: Codable {
@@ -85,6 +86,7 @@ struct ResponseConfig {
     let strings: Strings
     let values: ValuesForApp
     let annoucements: [Announcement]
+    let userData: [UserData]
 }
 
 struct UserDataDb: Codable {

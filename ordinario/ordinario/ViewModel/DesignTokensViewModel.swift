@@ -25,8 +25,4 @@ class DesignTokensViewModel: ObservableObject {
             self?.config = tokens
         }
     }
-    
-    func fechUserData(){
-        tokenProvider.fetchUserData(userIndex: <#T##Int#>, completion: <#T##(UserData) -> Void#>)
-    }
 }

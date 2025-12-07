@@ -9,10 +9,24 @@ import SwiftUI
 
 struct GradesView: View {
     @StateObject private var viewModel = GradeViewModel()
+    @EnvironmentObject var viewModelDb: DesignTokensViewModel
     
-    let primaryBackground = Color(red: 28/255, green: 28/255, blue: 30/255)
-    let cardBackgroundColor = Color(red: 44/255, green: 44/255, blue: 46/255)
-    let accentColor = Color(red: 255/255, green: 87/255, blue: 51/255)
+    var primaryBackground: Color {
+        let hex = viewModelDb.config?.colors.background ?? "#141416"
+        return Color(hex: hex)
+    }
+    
+    var cardBackgroundColor: Color {
+        if let hex = viewModelDb.config?.colors.cardBackground {
+            return Color(hex: hex)
+        }
+        return Color(red: 44/255, green: 44/255, blue: 46/255)
+    }
+    
+    var accentColor: Color {
+        let hex = viewModelDb.config?.colors.mainColor ?? "#000000"
+        return Color(hex: hex)
+    }
 
     var body: some View {
         NavigationView {
@@ -45,7 +59,7 @@ struct GradesView: View {
                         .padding(.horizontal)
 
                         // 📌 SEMESTRES
-                        ForEach(viewModel.semesters, id: \.title) { semester in
+                        ForEach(viewModelDb.config?.userData[0].grades ?? [], id: \.title) { semester in
                             
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(semester.title)
@@ -71,4 +85,5 @@ struct GradesView: View {
 
 #Preview {
     GradesView()
+        .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
 }

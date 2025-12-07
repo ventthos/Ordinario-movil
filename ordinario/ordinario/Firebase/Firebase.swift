@@ -42,24 +42,4 @@ class FirebaseTokenProvider : TokenProvider{
             }
         }
     }
-    
-    func fetchUserData(userIndex: Int, completion: @escaping (UserData) -> Void) {
-        databaseRef
-            .child("users")
-            .child("\(userIndex)")
-            .observeSingleEvent(of: .value) { snapshot, _ in
-                
-                do {
-                    let json = try JSONSerialization.data(withJSONObject: snapshot.value ?? [:])
-                    let decoder = JSONDecoder()
-                    let userDb = try decoder.decode(UserDataDb.self, from: json)
-                    
-                    let userParsed = UserAdapter.convertUserData(user: userDb)
-                    completion(userParsed)  
-                } catch {
-                    print("❌ Error al decodificar: \(error)")
-                }
-            }
-    }
-
 }
