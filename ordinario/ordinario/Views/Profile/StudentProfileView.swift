@@ -1,22 +1,27 @@
 import SwiftUI
 
 struct UserProfileView: View {
+    @EnvironmentObject var viewModel: DesignTokensViewModel
     
-    // MARK: - Datos del estudiante
-    let name: String
-    let email: String
-    let career: String
-    let group: String
-    let photoURL: String?
-    
-    // MARK: - Datos institucionales
-    let institutionName: String
-    let logoURL: String?
-    let accent: Color
     
     // MARK: - Colores base
-    let primaryBackground = Color(red: 28/255, green: 28/255, blue: 30/255)  // #1C1C1E
-    let cardBackground = Color(red: 44/255, green: 44/255, blue: 46/255)     // #2C2C2E
+    var primaryBackground: Color {
+        let hex = viewModel.config?.colors.background ?? "#1C1C1E"
+        return Color(hex: hex)
+    }
+    var cardBackground: Color {
+        let hex = viewModel.config?.colors.cardBackground ?? "#2C2C2E"
+        return Color(hex: hex)
+    }
+    
+    var accent: Color {
+        let hex = viewModel.config?.colors.mainColor ?? "#2C2C2E"
+        return Color(hex: hex)
+    }
+    
+    var user:UserData?{
+        return viewModel.config?.userData[0]
+    }
     
     @State private var animate = false
     
@@ -62,7 +67,7 @@ extension UserProfileView {
             .overlay(
                 // Logo escuela opcional
                 VStack {
-                    if let logoStr = logoURL, let url = URL(string: logoStr) {
+                    if let logoStr = viewModel.config?.values.logoUrl, let url = URL(string: logoStr) {
                         AsyncImage(url: url) { img in
                             img.resizable()
                                 .scaledToFit()
@@ -79,7 +84,7 @@ extension UserProfileView {
             
             // FOTO DEL USUARIO superpuesta
             VStack {
-                if let urlStr = photoURL, let url = URL(string: urlStr) {
+                if let urlStr = user?.photoUrl, let url = URL(string: urlStr) {
                     AsyncImage(url: url) { img in
                         img.resizable()
                             .scaledToFill()
@@ -113,10 +118,10 @@ extension UserProfileView {
                 .font(.title3.bold())
                 .foregroundColor(.white)
             
-            infoRow(icon: "person.fill", title: "Nombre", value: name)
-            infoRow(icon: "envelope.fill", title: "Correo", value: email)
-            infoRow(icon: "graduationcap.fill", title: "Carrera", value: career)
-            infoRow(icon: "person.2.fill", title: "Grupo", value: group)
+            infoRow(icon: "person.fill", title: "Nombre", value: user?.name ?? "")
+            infoRow(icon: "envelope.fill", title: "Correo", value: user?.email ?? "")
+            infoRow(icon: "graduationcap.fill", title: "Carrera", value: user?.career ?? "")
+            infoRow(icon: "person.2.fill", title: "Grupo", value: user?.group ?? "")
             
             // MARK: - Línea decorativa animada (estilo 10)
             RoundedRectangle(cornerRadius: 4)
@@ -161,16 +166,7 @@ extension UserProfileView {
 
 // MARK: - PREVIEW
 #Preview {
-    UserProfileView(
-        name: "Juan Pérez",
-        email: "juan.perez@example.com",
-        career: "Ingeniería en Sistemas",
-        group: "6° A",
-        photoURL: "https://i.pravatar.cc/300",
-        
-        institutionName: "Instituto Tecnológico Superior",
-        logoURL: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_TEC.png",
-        accent: Color(red: 255/255, green: 87/255, blue: 51/255)
-    )
+    UserProfileView()
+        .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
 }
 

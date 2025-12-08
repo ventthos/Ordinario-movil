@@ -7,6 +7,7 @@
 
 
 struct UserData: Equatable{
+    let id: String 
     let career: String
     let email: String
     let grades: [SemesterGrades]

@@ -57,6 +57,13 @@ struct MainTabView: View {
                 }
                 .tag(3)
                 .environmentObject(viewModel)
+            UserProfileView()
+                .tabItem{
+                    Image(systemName: "person.fill")
+                    Text("Anuncios")
+                }
+                .tag(4)
+                .environmentObject(viewModel)
         }
         .tint(accentColor)
         .preferredColorScheme(.dark)

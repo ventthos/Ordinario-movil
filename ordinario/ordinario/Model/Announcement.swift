@@ -8,7 +8,7 @@
 import Foundation
 
 struct Announcement: Identifiable, Equatable {
-    let id: UUID = UUID()
+    let id: String
     let title: String
     let message: String
     let date: Date?

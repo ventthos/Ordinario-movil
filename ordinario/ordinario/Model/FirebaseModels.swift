@@ -8,8 +8,7 @@
 
 import Foundation
 
-
-
+// Root
 struct AppConfig: Codable {
     let colors: ColorModes
     let mode: String
@@ -49,17 +48,52 @@ struct AppValues: Codable, Equatable {
     let bannerImageUrl: String
 }
 
+// <-- CAMBIO: ahora diccionarios con key = id
 struct AppData: Codable, Equatable {
-    let annoucements: [AnnouncementInDb]
-    let users: [UserDataDb]
+    let annoucements: [String: AnnouncementInDb]
+    let users: [String: UserDataDb]
 }
 
+// Announcement in DB (date sigue siendo Date? y tu decoder configura formato dd/MM/yyyy)
 struct AnnouncementInDb: Codable, Equatable  {
     let title: String
     let message: String
     let date: Date?
     let imageUrl: String?
 }
+
+// DB representations using dictionaries para grades/subjects internos
+struct UserDataDb: Codable, Equatable  {
+    let career: String
+    let email: String
+    // CAMBIO: grades como diccionario
+    let grades: [String: GradeDb]
+    let group: String
+    let name: String
+    let photoUrl: String?
+    // CAMBIO: subjects como diccionario
+    let subjects: [String: SubjectInfoDb]
+}
+
+struct GradeDb: Codable, Equatable {
+    // CAMBIO: subjects como diccionario
+    let subjects: [String: GradeSubjectDb]
+    let title: String
+}
+
+struct GradeSubjectDb: Codable, Equatable {
+    let score: Double
+    let subjectName: String
+}
+
+struct SubjectInfoDb: Codable, Equatable {
+    let description: String
+    let name: String
+    let photoURL: String?
+    let schedule: String
+    let teacherName: String
+}
+
 
 struct ResponseConfig: Equatable  {
     struct Colors: Equatable  {
@@ -93,32 +127,4 @@ struct ResponseConfig: Equatable  {
     let values: ValuesForApp
     let annoucements: [Announcement]
     let userData: [UserData]
-}
-
-struct UserDataDb: Codable, Equatable  {
-    let career: String
-    let email: String
-    let grades: [GradeDb]
-    let group: String
-    let name: String
-    let photoUrl: String?
-    let subjects: [SubjectInfoDb]
-}
-
-struct GradeDb: Codable, Equatable {
-    let subjects: [GradeSubjectDb]
-    let title: String
-}
-
-struct GradeSubjectDb: Codable, Equatable {
-    let score: Double
-    let subjectName: String
-}
-
-struct SubjectInfoDb: Codable, Equatable {
-    let description: String
-    let name: String
-    let photoURL: String?
-    let schedule: String
-    let teacherName: String
 }
