@@ -17,6 +17,7 @@ struct ordinarioApp: App {
     var body: some Scene {
         WindowGroup {
             SplashView()
+            .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))
         }
     }
 }

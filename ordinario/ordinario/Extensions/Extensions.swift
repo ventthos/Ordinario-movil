@@ -29,3 +29,11 @@ extension String {
     }
 }
 
+extension String {
+    func toDate() -> Date? {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        df.locale = Locale(identifier: "en_US_POSIX")
+        return df.date(from: self)
+    }
+}

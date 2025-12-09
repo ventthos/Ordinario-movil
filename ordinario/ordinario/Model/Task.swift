@@ -8,10 +8,11 @@
 import Foundation
 
 struct TaskItem: Identifiable, Equatable, Codable{
-    var id = UUID()
+    var id :String
     let subjectName: String
     let title: String
     let description: String
     let dueDate: Date
     var isCompleted: Bool
+    let subjectKey : String
 }

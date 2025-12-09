@@ -15,7 +15,9 @@ struct GradesView: View {
         let hex = viewModelDb.config?.colors.background ?? "#141416"
         return Color(hex: hex)
     }
-    
+    var user: UserData? {
+        viewModelDb.config?.userData.first(where: { $0.email == session.currentUser?.email })
+        }
     var cardBackgroundColor: Color {
         if let hex = viewModelDb.config?.colors.cardBackground {
             return Color(hex: hex)
@@ -58,7 +60,7 @@ struct GradesView: View {
                         VStack(spacing: 6) {
                             Text("Promedio General")
                                 .foregroundColor(cardTextColor)
-                            Text("\(viewModel.getGlobalAverage(semesters:session.currentUser?.grades ?? []), specifier: "%.2f")")
+                            Text("\(viewModel.getGlobalAverage(semesters:user?.grades ?? []), specifier: "%.2f")")
                                 .font(.system(size: 40, weight: .bold))
                                 .foregroundColor(accentColor)
                         }
@@ -69,7 +71,7 @@ struct GradesView: View {
                         .padding(.horizontal)
 
                         // 📌 SEMESTRES
-                        ForEach(session.currentUser?.grades ?? [], id: \.title) { semester in
+                        ForEach(user?.grades ?? [], id: \.title) { semester in
                             
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(semester.title)

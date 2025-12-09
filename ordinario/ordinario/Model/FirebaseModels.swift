@@ -46,6 +46,7 @@ struct AppStrings: Codable, Equatable  {
 }
 
 struct AppValues: Codable, Equatable {
+    let Institucion: String
     let logoUrl: String
     let bannerImageUrl: String
     let userBannerUrl: String
@@ -91,6 +92,17 @@ struct SubjectInfoDb: Codable, Equatable {
     let photoURL: String?
     let schedule: String
     let teacherName: String
+    var tasks : [TaskItemDb]? = []
+}
+
+struct TaskItemDb: Codable, Equatable{
+    let description: String
+    let dueDate: String
+    let id: String
+    let isCompleted: Bool
+    let subjectName: String
+    let title: String
+    let subjectKey : String
 }
 
 
@@ -118,6 +130,7 @@ struct ResponseConfig: Equatable  {
     }
 
     struct ValuesForApp: Equatable {
+        let Institucion: String
         let logoUrl: String
         let bannerImageUrl: String
         let userBannerUrl: String

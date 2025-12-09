@@ -20,7 +20,7 @@ struct UserProfileView: View {
     }
     
     var user: UserData? {
-        session.currentUser ?? viewModel.config?.userData[0]
+        viewModel.config?.userData.first(where: { $0.email == session.currentUser?.email })
         }
     
     var cardFontColor: Color {

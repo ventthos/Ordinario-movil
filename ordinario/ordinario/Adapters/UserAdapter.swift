@@ -66,12 +66,28 @@ class UserAdapter {
                 // subjects: [String: SubjectInfoDb] -> [Subject]
                 let subjectsList: [Subject] = userDb.subjects
                     .map { (_, subjectDb) in
-                        Subject(
+                        
+                        let tasksList: [TaskItem]? = subjectDb.tasks?.map { t in
+                            
+                            TaskItem(
+                                id: t.id,
+                                subjectName: t.subjectName,
+                                title: t.title,
+                                description: t.description,
+                                dueDate: t.dueDate.toDate() ?? Date(),
+                                isCompleted: t.isCompleted,
+                                subjectKey: t.subjectKey
+                            )
+                        } 
+
+                        return Subject(
                             name: subjectDb.name,
                             teacherName: subjectDb.teacherName,
                             photoURL: subjectDb.photoURL ?? "",
                             schedule: subjectDb.schedule,
+                            tasks: tasksList ?? [],
                             description: subjectDb.description
+                            
                         )
                     }
                     .sorted { $0.name < $1.name }
@@ -114,6 +130,7 @@ class UserAdapter {
                 helpUrl: strings.helpUrl
             ),
             values: .init(
+                Institucion: appValues.Institucion,
                 logoUrl: appValues.logoUrl,
                 bannerImageUrl: appValues.bannerImageUrl,
                 userBannerUrl: appValues.userBannerUrl

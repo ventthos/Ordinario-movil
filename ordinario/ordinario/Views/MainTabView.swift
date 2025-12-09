@@ -68,11 +68,13 @@ struct MainTabView: View {
                 .tag(4).environmentObject(session)
                 .environmentObject(viewModel)
             if let user = session.currentUser {
-                TasksView(viewModel: TasksViewModel(user: user)).tabItem {
+                TasksView().tabItem {
                     Image(systemName: "checklist")
                     Text("Tareas")
                 }
                 .tag(5)
+                .environmentObject(viewModel)
+                .environmentObject(session)
             }
                 
         }

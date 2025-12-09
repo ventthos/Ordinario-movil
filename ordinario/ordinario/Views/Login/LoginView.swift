@@ -101,6 +101,9 @@ struct LoginView: View {
                             .cornerRadius(12)
                             .foregroundColor(Color(hex:viewModel.config?.colors.mainFontColor ?? "#ffffff"))
                             .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
+                            .textInputAutocapitalization(.never) 
+                            .autocorrectionDisabled(true)
                     }
                     
                     // PASSWORD
