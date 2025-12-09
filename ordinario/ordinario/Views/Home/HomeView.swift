@@ -61,6 +61,9 @@ struct HomeView: View {
 
                     // Menú principal
                     quickMenu
+                    
+                    Text("¿Dudas? ¿Necesitas soporte? Contáctanos a través de la siguiente liga: \(viewModel.config?.strings.helpUrl ?? "Pendiente")")
+                        .foregroundColor(Color(hex: viewModel.config?.colors.mainFontColor ?? "#ffffff"))
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 20)
@@ -133,6 +136,9 @@ extension HomeView {
                 .font(.title3)
                 .foregroundColor(Color(hex: viewModel.config?.colors.mainFontColor ?? "#ffffff"))
                 .fontWeight(.bold)
+            Text(viewModel.config?.strings.homeText ?? "")
+                .font(.body)
+                .foregroundColor(Color(hex: viewModel.config?.colors.mainFontColor ?? "#ffffff"))
             if let urlStr = viewModel.config?.values.bannerImageUrl, let url = URL(string: urlStr) {
                 AsyncImage(url: url) { img in
                     img.resizable()

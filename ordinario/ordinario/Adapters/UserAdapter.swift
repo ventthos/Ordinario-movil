@@ -109,7 +109,9 @@ class UserAdapter {
             ),
             strings: .init(
                 greeting: strings.greetings,
-                nombreInstitucion: strings.nombreInstitucion
+                nombreInstitucion: strings.nombreInstitucion,
+                homeText: strings.homeText,
+                helpUrl: strings.helpUrl
             ),
             values: .init(
                 logoUrl: appValues.logoUrl,

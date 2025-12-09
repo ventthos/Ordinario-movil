@@ -41,6 +41,8 @@ struct ColorSet: Codable {
 struct AppStrings: Codable, Equatable  {
     let greetings: String
     let nombreInstitucion: String
+    let homeText: String
+    let helpUrl: String
 }
 
 struct AppValues: Codable, Equatable {
@@ -111,6 +113,8 @@ struct ResponseConfig: Equatable  {
     struct Strings: Equatable  {
         let greeting: String
         let nombreInstitucion: String
+        let homeText: String
+        let helpUrl: String
     }
 
     struct ValuesForApp: Equatable {
