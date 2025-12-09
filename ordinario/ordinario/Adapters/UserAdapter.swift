@@ -98,7 +98,7 @@ class UserAdapter {
                 mainColor: modeColors.mainColor,
                 mainFontColor: modeColors.mainFontColor,
                 inputColor: modeColors.inputColor,
-                labelInputColor: modeColors.inputColor,
+                labelInputColor: modeColors.labelInputColor,
                 announcementsColor: modeColors.announcementsColor,
                 gradesColor: modeColors.gradesColor,
                 subjectsColor: modeColors.subjectsColor,

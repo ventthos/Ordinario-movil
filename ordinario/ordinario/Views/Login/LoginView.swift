@@ -117,7 +117,7 @@ struct LoginView: View {
                                     SecureField("•••••••", text: $password)
                                 }
                             }
-                            .foregroundColor(Color(hex:viewModel.config?.colors.mainFontColor ?? "#ffffff"))
+                            .foregroundColor(Color(hex:viewModel.config?.colors.labelInputColor ?? "#ffffff"))
                             
                             
                             Button(action: {
@@ -128,7 +128,7 @@ struct LoginView: View {
                             }
                         }
                         .padding()
-                        .background(Color(hex:viewModel.config?.colors.labelInputColor ?? "#ffffff"))
+                        .background(Color(hex:viewModel.config?.colors.inputColor ?? "#ffffff"))
                         .cornerRadius(12)
                         
                     }

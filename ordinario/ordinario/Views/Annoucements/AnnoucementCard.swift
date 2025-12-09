@@ -17,7 +17,7 @@ struct AnnouncementCard: View {
     }
     
     var mainFontColor: Color {
-        let hex = viewModel.config?.colors.mainFontColor ?? "#ffffff"
+        let hex = viewModel.config?.colors.cardFontColor ?? "#ffffff"
         return Color(hex: hex)
     }
 

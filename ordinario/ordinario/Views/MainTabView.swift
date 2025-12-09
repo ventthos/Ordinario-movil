@@ -63,7 +63,7 @@ struct MainTabView: View {
             UserProfileView()
                 .tabItem{
                     Image(systemName: "person.fill")
-                    Text("Anuncios")
+                    Text("Perfil")
                 }
                 .tag(4).environmentObject(session)
                 .environmentObject(viewModel)
