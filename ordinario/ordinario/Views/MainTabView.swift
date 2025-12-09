@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject var viewModel: DesignTokensViewModel
-    
+    @EnvironmentObject var session: UserSession
     var accentColor: Color {
         let hex = viewModel.config?.colors.mainColor ?? "#000000"
         return Color(hex: hex)
@@ -34,6 +34,7 @@ struct MainTabView: View {
                 }
                 .tag(0)
                 .environmentObject(viewModel)
+                .environmentObject(session)
             
             SubjectListView()
                 .tabItem{
@@ -42,7 +43,7 @@ struct MainTabView: View {
                 }
                 .tag(1)
                 .environmentObject(viewModel)
-            
+                .environmentObject(session)
             GradesView()
                 .tabItem{
                     Image(systemName: "book.closed.fill")
@@ -50,6 +51,7 @@ struct MainTabView: View {
                 }
                 .tag(2)
                 .environmentObject(viewModel)
+                .environmentObject(session)
             AnnouncementBoardView()
                 .tabItem{
                     Image(systemName: "megaphone.fill")
@@ -57,13 +59,22 @@ struct MainTabView: View {
                 }
                 .tag(3)
                 .environmentObject(viewModel)
+                .environmentObject(session)
             UserProfileView()
                 .tabItem{
                     Image(systemName: "person.fill")
                     Text("Anuncios")
                 }
-                .tag(4)
+                .tag(4).environmentObject(session)
                 .environmentObject(viewModel)
+            if let user = session.currentUser {
+                TasksView(viewModel: TasksViewModel(user: user)).tabItem {
+                    Image(systemName: "checklist")
+                    Text("Tareas")
+                }
+                .tag(5)
+            }
+                
         }
         .tint(accentColor)
         .preferredColorScheme(.dark)

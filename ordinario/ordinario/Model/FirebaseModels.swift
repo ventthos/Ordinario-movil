@@ -46,15 +46,14 @@ struct AppStrings: Codable, Equatable  {
 struct AppValues: Codable, Equatable {
     let logoUrl: String
     let bannerImageUrl: String
+    let userBannerUrl: String
 }
 
-// <-- CAMBIO: ahora diccionarios con key = id
 struct AppData: Codable, Equatable {
     let annoucements: [String: AnnouncementInDb]
     let users: [String: UserDataDb]
 }
 
-// Announcement in DB (date sigue siendo Date? y tu decoder configura formato dd/MM/yyyy)
 struct AnnouncementInDb: Codable, Equatable  {
     let title: String
     let message: String
@@ -66,17 +65,15 @@ struct AnnouncementInDb: Codable, Equatable  {
 struct UserDataDb: Codable, Equatable  {
     let career: String
     let email: String
-    // CAMBIO: grades como diccionario
+    let password : String
     let grades: [String: GradeDb]
     let group: String
     let name: String
     let photoUrl: String?
-    // CAMBIO: subjects como diccionario
     let subjects: [String: SubjectInfoDb]
 }
 
 struct GradeDb: Codable, Equatable {
-    // CAMBIO: subjects como diccionario
     let subjects: [String: GradeSubjectDb]
     let title: String
 }
@@ -119,6 +116,7 @@ struct ResponseConfig: Equatable  {
     struct ValuesForApp: Equatable {
         let logoUrl: String
         let bannerImageUrl: String
+        let userBannerUrl: String
     }
 
     

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct UserProfileView: View {
     @EnvironmentObject var viewModel: DesignTokensViewModel
-    
+    @EnvironmentObject var session: UserSession  // <- IMPORTANTE
     
     // MARK: - Colores base
     var primaryBackground: Color {
@@ -19,8 +19,13 @@ struct UserProfileView: View {
         return Color(hex: hex)
     }
     
-    var user:UserData?{
-        return viewModel.config?.userData[0]
+    var user: UserData? {
+        session.currentUser ?? viewModel.config?.userData[0]
+        }
+    
+    var cardFontColor: Color {
+        let hex = viewModel.config?.colors.cardFontColor ?? "#ffffff"
+        return Color(hex: hex)
     }
     
     @State private var animate = false
@@ -65,21 +70,20 @@ extension UserProfileView {
             )
             .frame(height: 200)
             .overlay(
-                // Logo escuela opcional
-                VStack {
-                    if let logoStr = viewModel.config?.values.logoUrl, let url = URL(string: logoStr) {
-                        AsyncImage(url: url) { img in
-                            img.resizable()
-                                .scaledToFit()
-                                .frame(width: 80, height: 80)
-                                .padding(.top, 20)
-                        } placeholder: {
-                            ProgressView()
-                                .frame(height: 80)
+                ZStack {
+                        if let logoStr = viewModel.config?.values.userBannerUrl,
+                           let url = URL(string: logoStr) {
+
+                            AsyncImage(url: url) { img in
+                                img.resizable()
+                                    .scaledToFill()
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .clipped()
+                            } placeholder: {
+                                ProgressView()
+                            }
                         }
                     }
-                }
-                .padding(.top)
             )
             
             // FOTO DEL USUARIO superpuesta
@@ -151,11 +155,11 @@ extension UserProfileView {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(cardFontColor.opacity(0.8))
                 
                 Text(value)
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(cardFontColor)
             }
             
             Spacer()

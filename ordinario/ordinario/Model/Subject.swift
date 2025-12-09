@@ -6,12 +6,13 @@
 //
 
 import Foundation
-struct Subject: Identifiable, Equatable {
-    let id = UUID()
+struct Subject: Identifiable, Equatable, Codable {
+    var id = UUID()
     let name: String
     let teacherName: String
     let photoURL: String // URL de la imagen de la materia
     let schedule: String
+    var tasks: [TaskItem] = []
     let description: String
     
     // Datos de ejemplo

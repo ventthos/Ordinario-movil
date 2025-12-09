@@ -3,6 +3,7 @@ import SwiftUI
 struct SubjectListView: View {
     // Manejo de estado: La lista de materias
     @EnvironmentObject var viewModel: DesignTokensViewModel
+    @EnvironmentObject var session: UserSession
     @State private var subjects: [Subject] = Subject.sampleSubjects
     
     // Color de fondo principal
@@ -36,7 +37,7 @@ struct SubjectListView: View {
                             .foregroundColor(mainTextColor)
                         
                         // Lista de tarjetas de cursos
-                        ForEach(viewModel.config?.userData[0].subjects ?? []) { subject in
+                        ForEach(session.currentUser?.subjects ?? []) { subject in
                             NavigationLink(destination: MateriaDetalleView(materia: subject)) {
                                 SubjectCardView(subject: subject)
                                     .environmentObject( DesignTokensViewModel(tokenProvider: FirebaseTokenProvider()))

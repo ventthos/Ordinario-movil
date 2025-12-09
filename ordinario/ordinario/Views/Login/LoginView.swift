@@ -1,12 +1,19 @@
 import SwiftUI
 
 struct LoginView: View {
+    // 1. Instanciamos el Session Manager
+    @ObservedObject var session = UserSession.shared
     @StateObject private var viewModel = DesignTokensViewModel(tokenProvider: FirebaseTokenProvider())
     
     // MARK: - Campos
     @State private var email = ""
     @State private var password = ""
     @State private var isPasswordVisible = false
+    
+    // Estados para manejar errores y navegación
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    @State private var isLoggedIn = false // Úsalo para navegar o cerrar el modal
     
     var background: Color {
         if let hex = viewModel.config?.colors.background {
@@ -33,6 +40,7 @@ struct LoginView: View {
     }
     
     var body: some View {
+        // Envolvemos en NavigationView si quieres navegar, o simplemente ZStack
         ZStack {
             background.ignoresSafeArea()
             
@@ -50,38 +58,30 @@ struct LoginView: View {
                                     .scaledToFit()
                                     .frame(height: 90)
                             case .empty:
-                                ProgressView()
-                                    .frame(height: 90)
+                                ProgressView().frame(height: 90)
                             case .failure:
                                 Image(systemName: "exclamationmark.triangle.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .foregroundColor(.red)
-                                    .frame(height: 80)
-                                    .symbolRenderingMode(.hierarchical)
-                            default:
-                                EmptyView()
+                                    .resizable().scaledToFit()
+                                    .foregroundColor(.red).frame(height: 80)
+                            default: EmptyView()
                             }
                         }
                     } else {
                         Image(systemName: "exclamationmark.triangle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundColor(.red)
-                            .frame(height: 80)
-                            .symbolRenderingMode(.hierarchical)
+                            .resizable().scaledToFit()
+                            .foregroundColor(.red).frame(height: 80)
                     }
                 }
                 .padding(.top, 40)
                 
                 // MARK: - TEXTOS INSTITUCIONALES
                 VStack(spacing: 6) {
-                    Text(viewModel.config?.strings.nombreInstitucion ?? "No data")
+                    Text(viewModel.config?.strings.nombreInstitucion ?? "Cargando...")
                         .font(.title.bold())
                         .foregroundColor(mainFontColor)
                         .multilineTextAlignment(.center)
                     
-                    Text("Iniciar sesión en tu cuenta")
+                    Text(viewModel.config?.strings.greeting ?? "Iniciar sesión")
                         .foregroundColor(mainFontColor.opacity(0.7))
                         .font(.headline)
                 }
@@ -95,12 +95,11 @@ struct LoginView: View {
                             .foregroundColor(Color(hex:viewModel.config?.colors.labelInputColor ?? "#ffffff"))
                             .font(.subheadline)
                         
-                        TextField("ejemplo@mail.com", text: $email)
+                        TextField("oscar@gmail.com", text: $email)
                             .padding()
                             .background(Color(hex:viewModel.config?.colors.inputColor ?? "#ffffff"))
                             .cornerRadius(12)
-                            .foregroundColor(.white)
-                            .textInputAutocapitalization(.never)
+                            .foregroundColor(Color(hex:viewModel.config?.colors.mainFontColor ?? "#ffffff"))
                             .keyboardType(.emailAddress)
                     }
                     
@@ -118,7 +117,8 @@ struct LoginView: View {
                                     SecureField("•••••••", text: $password)
                                 }
                             }
-                            .foregroundColor(.white)
+                            .foregroundColor(Color(hex:viewModel.config?.colors.mainFontColor ?? "#ffffff"))
+                            
                             
                             Button(action: {
                                 isPasswordVisible.toggle()
@@ -130,6 +130,7 @@ struct LoginView: View {
                         .padding()
                         .background(Color(hex:viewModel.config?.colors.labelInputColor ?? "#ffffff"))
                         .cornerRadius(12)
+                        
                     }
                     
                     // RECUPERAR
@@ -144,13 +145,13 @@ struct LoginView: View {
                     
                 }
                 .padding()
-                .background(cardBackground.opacity(0.4))
+                .background(cardBackground.opacity(0.9)) // Subí la opacidad para legibilidad
                 .cornerRadius(20)
                 .padding(.horizontal)
                 
-                // MARK: - BOTÓN LOGIN
+                // MARK: - BOTÓN LOGIN LÓGICA
                 Button {
-                    // Aquí haces Firebase Auth
+                    attemptLogin()
                 } label: {
                     HStack {
                         Spacer()
@@ -171,11 +172,49 @@ struct LoginView: View {
             }
         }
         .preferredColorScheme(.dark)
+        // Alerta de error
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+        // Navegación cuando el login es exitoso
+        .fullScreenCover(isPresented: $isLoggedIn) {
+            MainTabView()
+                .environmentObject(session)
+                .environmentObject(viewModel)
+        }
     }
+    
+    // MARK: - LÓGICA DE LOGIN
+    func attemptLogin() {
+        // 1. Validar que tengamos datos cargados
+        guard let usersList = viewModel.config?.userData else {
+            alertMessage = "Cargando datos de la institución, intenta en un momento."
+            showAlert = true
+            return
+        }
+
+        let normalizedEmail = email.lowercased().trimmingCharacters(in: .whitespaces)
+        let passwordTrim = password.trimmingCharacters(in: .whitespaces)
+
+        // 2. Buscar usuario por correo Y contraseña
+        if let foundUser = usersList.first(where: {
+            $0.email.lowercased() == normalizedEmail &&
+            $0.password == passwordTrim        // 👈 Validación real de contraseña
+        }) {
+
+            // 3. Iniciar sesión
+            session.currentUser = foundUser
+            print("Usuario guardado: \(foundUser.name)")
+            isLoggedIn = true
+
+        } else {
+            alertMessage = "Usuario o contraseña incorrectos."
+            showAlert = true
+        }
+    }
+
 }
 
 #Preview {
     LoginView()
 }
-
-

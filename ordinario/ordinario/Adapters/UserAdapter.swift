@@ -80,6 +80,7 @@ class UserAdapter {
                     id: key,
                     career: userDb.career,
                     email: userDb.email,
+                    password: userDb.password,
                     grades: semesters,
                     group: userDb.group,
                     name: userDb.name,
@@ -112,7 +113,8 @@ class UserAdapter {
             ),
             values: .init(
                 logoUrl: appValues.logoUrl,
-                bannerImageUrl: appValues.bannerImageUrl
+                bannerImageUrl: appValues.bannerImageUrl,
+                userBannerUrl: appValues.userBannerUrl
             ),
             annoucements: announcementsArray,
             userData: usersArray

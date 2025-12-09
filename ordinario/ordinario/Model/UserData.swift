@@ -6,10 +6,11 @@
 //
 
 
-struct UserData: Equatable{
+struct UserData: Codable, Equatable, Identifiable{
     let id: String 
     let career: String
     let email: String
+    let password : String
     let grades: [SemesterGrades]
     let group: String
     let name: String

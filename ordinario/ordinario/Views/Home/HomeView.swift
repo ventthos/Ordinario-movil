@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: DesignTokensViewModel
+    @EnvironmentObject var session: UserSession
     @Binding var selectedTab: Int
     
     var menuItems: [HomeMenuItem] {
@@ -106,7 +107,7 @@ extension HomeView {
             Spacer()
 
             // Foto del alumno
-            if let photoStr = viewModel.config?.userData[0].photoUrl, let url = URL(string: photoStr) {
+            if let photoStr = session.currentUser?.photoUrl, let url = URL(string: photoStr) {
                 AsyncImage(url: url) { img in
                     img.resizable()
                         .scaledToFill()

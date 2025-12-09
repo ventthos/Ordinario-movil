@@ -10,7 +10,7 @@ import SwiftUI
 struct GradesView: View {
     @StateObject private var viewModel = GradeViewModel()
     @EnvironmentObject var viewModelDb: DesignTokensViewModel
-    
+    @EnvironmentObject var session: UserSession
     var primaryBackground: Color {
         let hex = viewModelDb.config?.colors.background ?? "#141416"
         return Color(hex: hex)
@@ -58,7 +58,7 @@ struct GradesView: View {
                         VStack(spacing: 6) {
                             Text("Promedio General")
                                 .foregroundColor(cardTextColor)
-                            Text("\(viewModel.getGlobalAverage(semesters:viewModelDb.config?.userData[0].grades ?? []), specifier: "%.2f")")
+                            Text("\(viewModel.getGlobalAverage(semesters:session.currentUser?.grades ?? []), specifier: "%.2f")")
                                 .font(.system(size: 40, weight: .bold))
                                 .foregroundColor(accentColor)
                         }
@@ -69,7 +69,7 @@ struct GradesView: View {
                         .padding(.horizontal)
 
                         // 📌 SEMESTRES
-                        ForEach(viewModelDb.config?.userData[0].grades ?? [], id: \.title) { semester in
+                        ForEach(session.currentUser?.grades ?? [], id: \.title) { semester in
                             
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(semester.title)
